@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sentinella - User Access &amp; Permissions</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2547f4",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#101322",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Header/Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-slate-200 dark:border-slate-800 px-6 lg:px-10 py-3 bg-white/5 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined text-3xl">shield_person</span>
+<h2 class="text-red-600 dark:text-red-500 text-xl font-bold leading-tight tracking-tight">Sentinella </h2>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-primary text-sm font-semibold border-b-2 border-primary pb-1" href="#">Users</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors" href="#">Roles</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary text-sm font-medium transition-colors" href="#">Audit Logs</a>
+
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'dashboard' %}">Dashboard</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'incidents' %}">Incident Log</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'floor_map' %}">Floor Maps</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'staff_portal' %}">Staff Portal</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'settings' %}">Settings</a> 
+
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-4">
+<label class="hidden sm:flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+<div class="text-slate-400 flex items-center justify-center pl-3">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input w-full border-none bg-transparent focus:ring-0 text-sm placeholder:text-slate-500" placeholder="Search accounts..."/>
+</div>
+</label>
+<div class="flex gap-2">
+<a href="{% url 'notification' %}" class="flex items-center">
+  <span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-white">notifications</span>
+</a>
+<a href="{% url 'settings' %}" class="flex items-center">
+  <span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-white">settings</span>
+</a>
+</div>
+<div class="bg-primary/20 rounded-full h-10 w-10 border-2 border-primary flex items-center justify-center overflow-hidden">
+<img alt="Admin Avatar" class="h-8 w-8" data-alt="User profile avatar icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfAxUIKc4jLvS5GdtNTvFY51n8VrfVN2u8eJJe4BRQurHGqwIK8Tk3gP7Jeo-Gf8A2Wwha1FNcYX5JQbGRq1C2IrHCha62ydIpl4c7oBpxlEUIgrJYKcrdgt3a-vanLmuHfLbsTnCgmSfkK2CZRga9_vMIzbutEz9fBx_SEBAOs0-sO-wrk59LIfOsk4lYrs57Ss4d08RB6xxP4PweCAyPeWHzzAigoSvchc_A5nU2GnNBYTcrQpC7RJPC6mSfEFL-zKAImd-F0qo"/>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col md:flex-row max-w-[1440px] mx-auto w-full">
+<!-- Sidebar Menu -->
+<aside class="w-full md:w-64 p-6 border-r border-slate-200 dark:border-slate-800 flex flex-col gap-6 bg-slate-50 dark:bg-background-dark/50">
+<div class="space-y-1">
+<h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-4 px-3">System Access</h3>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-primary hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined text-xl">group</span>
+<span class="text-sm font-medium">User Accounts</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined text-xl">admin_panel_settings</span>
+<span class="text-sm font-medium">Role Templates</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined text-xl">key</span>
+<span class="text-sm font-medium">Permission Matrix</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined text-xl">history_edu</span>
+<span class="text-sm font-medium">Audit History</span>
+</a>
+</div>
+<div class="mt-auto p-4 rounded-xl bg-primary/5 border border-primary/20">
+<p class="text-xs text-primary font-bold mb-1">Security Health</p>
+<div class="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden mb-2">
+<div class="bg-primary h-full w-[85%]"></div>
+</div>
+<p class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-tighter">85% MFA Compliance</p>
+</div>
+</aside>
+<!-- Content Area -->
+<section class="flex-1 p-6 lg:p-10 flex flex-col gap-8">
+<!-- Title & Stats -->
+<div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+<div class="max-w-2xl">
+<h1 class="text-slate-900 dark:text-white text-3xl font-bold tracking-tight mb-2">User Access &amp; Permissions</h1>
+<p class="text-slate-600 dark:text-slate-400">Manage system accounts and define role-specific access to live feeds, analytics, and legal logs.</p>
+</div>
+<button class="flex items-center gap-2 bg-[#bc6ee6] hover:bg-[#bc6ee6]/90 text-white px-5 py-2.5 rounded-lg font-bold text-sm transition-all shadow-lg shadow-[#bc6ee6]/20">
+    <span class="material-symbols-outlined">person_add</span>
+    Invite New User
+</button>
+</div>
+<!-- Metrics Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<div class="p-6 rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 flex items-center gap-4">
+<div class="h-12 w-12 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl">badge</span>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Users</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-white leading-none">1,248</p>
+</div>
+</div>
+<div class="p-6 rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 flex items-center gap-4">
+<div class="h-12 w-12 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl">verified_user</span>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Active Now</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-white leading-none">42</p>
+</div>
+</div>
+<div class="p-6 rounded-xl bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 flex items-center gap-4">
+<div class="h-12 w-12 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl">pending</span>
+</div>
+<div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Pending Invites</p>
+<p class="text-2xl font-bold text-slate-900 dark:text-white leading-none">5</p>
+</div>
+</div>
+</div>
+<!-- Main Management Tabs & Table -->
+<div class="bg-white dark:bg-slate-800/30 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="flex border-b border-slate-200 dark:border-slate-800 px-6 gap-8 bg-slate-50/50 dark:bg-slate-800/50">
+<button class="border-b-2 border-primary text-primary py-4 text-sm font-bold">All Users</button>
+<button class="text-slate-500 dark:text-slate-400 py-4 text-sm font-medium hover:text-primary transition-colors">Administrators</button>
+<button class="text-slate-500 dark:text-slate-400 py-4 text-sm font-medium hover:text-primary transition-colors">Managers</button>
+<button class="text-slate-500 dark:text-slate-400 py-4 text-sm font-medium hover:text-primary transition-colors">Operators</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">
+<tr>
+<th class="px-6 py-4">User</th>
+<th class="px-6 py-4">Role</th>
+<th class="px-6 py-4">Access Level</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden">
+<img alt="Sarah" data-alt="Female profile picture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBScl3QdqRYArJyQmp-5V-I5VqZVF-8bD7JE8FEm8Y9fF0_6n10dluOyNPQzplBot6RF4OXsk15GbE4s8D7q2aw_pMyZoSKi2FJ6DlHKC5CHTmJ4YaZGJRhuLgXZDeVUs8VdkQQFC-hRghvqc1mgQVIE1GhJA1grSM924yUw1jr1KRTzPNKG_-osM1eoMeO2SzJUrlk4zqFVGtOQf2p0ZbrO2uK8eInAkUxeFcfrnW39W_xJ6Jx9Oo5O2my54LD0dIelrVObpx7xIc"/>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">Sarah Jenkins</p>
+<p class="text-xs text-slate-500">s.jenkins@sentinella.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">Admin</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex gap-1.5 flex-wrap max-w-xs">
+<span class="text-[10px] bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">Full Access</span>
+<span class="text-[10px] bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">Analytics</span>
+<span class="text-[10px] bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">Legal Logs</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="h-2 w-2 rounded-full bg-emerald-500"></div>
+<span class="text-xs text-slate-600 dark:text-slate-400 font-medium">Active</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden">
+<img alt="Marcus" data-alt="Male profile picture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3dRM6mKyN98WiO0ytfedFvPQbJ_5Kl55U5g3ZBYXpfY9CO3uip2OAhjBQbX0bQv5V5pv5352ttcHsyLIAEDgYCogdf3APoMNuo4MoZmVrBzNQj1ZzE1rEfTunuepxaX1upFC-QjTPf2hQakkHn58DwJS63qSOeDZdOgmK1nOCn9EPewZZY-tPXAZSQaOtf5cnLKOaTUHiyBtfuSKF4G_6jPQBfmk5SuL-d47cscM_EkjOoh3G0ukfBi0tagbEaYVxWuYeJC87Euw"/>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">Marcus Thorne</p>
+<p class="text-xs text-slate-500">m.thorne@sentinella.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-500">Manager</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex gap-1.5 flex-wrap max-w-xs">
+<span class="text-[10px] bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">Live Feeds</span>
+<span class="text-[10px] bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">Analytics</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="h-2 w-2 rounded-full bg-emerald-500"></div>
+<span class="text-xs text-slate-600 dark:text-slate-400 font-medium">Active</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden">
+<img alt="Elena" data-alt="Female profile picture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuARYktBDcW-J63IwDnpmeLN1wOsWFTQKEr1Pcv6Cqfp-xJ4cnIT3b0I-Pr4ecyFGODor1swgZqGXLmWV-eMu1mdChb0TaSvbPoC5qnptSHAkdS8c6APpfzAS8pt3g5jrs0kWO4i0c_FEURGY81mr9TB2FEy-TNQO8i_aERhOOabiB3Bqjlduhe5tbOVm1J_cJR26gpLcsmUAWKXJjRU1dkFJ1e0CKs8pkpEJxXAelHTSQQnXl0DNKR51aSPRFzxcJE2vci1P5unuOc"/>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">Elena Rodriguez</p>
+<p class="text-xs text-slate-500">e.rodriguez@sentinella.com</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-500">Operator</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex gap-1.5 flex-wrap max-w-xs">
+<span class="text-[10px] bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-700">Live Feeds</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="h-2 w-2 rounded-full bg-slate-400"></div>
+<span class="text-xs text-slate-600 dark:text-slate-400 font-medium">Inactive</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 bg-slate-50 dark:bg-slate-900/30 flex items-center justify-between border-t border-slate-200 dark:border-slate-800">
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Showing 1 to 3 of 1,248 entries</p>
+<div class="flex gap-2">
+<button class="px-3 py-1 rounded border border-slate-200 dark:border-slate-700 text-xs font-bold hover:bg-white dark:hover:bg-slate-800 transition-colors">Previous</button>
+<button class="px-3 py-1 rounded bg-[#bc6ee6] text-white text-xs font-bold">Next</button>
+</div>
+</div>
+</div>
+<!-- Role Configuration Cards -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="p-6 rounded-xl bg-white dark:bg-slate-800/30 border border-slate-200 dark:border-slate-800">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">rule</span>
+                                    Permission Policies
+                                </h3>
+<button class="text-xs text-primary font-bold hover:underline">Edit Policy Matrix</button>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">videocam</span>
+<span class="text-sm font-medium">Live Feed Monitoring</span>
+</div>
+<span class="text-[10px] font-bold uppercase text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded">Standard</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">analytics</span>
+<span class="text-sm font-medium">Data Analytics &amp; Reports</span>
+</div>
+<span class="text-[10px] font-bold uppercase text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded">Restricted</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">gavel</span>
+<span class="text-sm font-medium">Legal Log Archive Access</span>
+</div>
+<span class="text-[10px] font-bold uppercase text-red-500 bg-red-500/10 px-2 py-0.5 rounded">Admin Only</span>
+</div>
+</div>
+</div>
+<div class="p-6 rounded-xl bg-white dark:bg-slate-800/30 border border-slate-200 dark:border-slate-800">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">security_update_good</span>
+                                    Recent Audit Logs
+                                </h3>
+<button class="text-xs text-primary font-bold hover:underline">View All</button>
+</div>
+<div class="space-y-4">
+<div class="flex items-start gap-4">
+<div class="h-8 w-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm text-slate-500">lock_open</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-900 dark:text-white">Admin Sarah updated Elena's role</p>
+<p class="text-xs text-slate-500">2 minutes ago • ID: #45829</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="h-8 w-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm text-slate-500">person_add</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-900 dark:text-white">System invited 5 new managers</p>
+<p class="text-xs text-slate-500">1 hour ago • ID: #45812</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="h-8 w-8 rounded-full bg-red-500/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm text-red-500">report</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-900 dark:text-white">Failed login attempt from IP 192.1.1.0</p>
+<p class="text-xs text-slate-500">3 hours ago • ID: #45805</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="mt-auto border-t border-slate-200 dark:border-slate-800 px-6 py-6 bg-white dark:bg-background-dark">
+<div class="max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-xs text-slate-500 dark:text-slate-400">© 2024 Sentinella Security Systems. All rights reserved.</p>
+<div class="flex items-center gap-6">
+<a class="text-xs text-slate-500 dark:text-slate-400 hover:text-primary" href="#">System Status: <span class="text-emerald-500 font-bold">Optimal</span></a>
+<a class="text-xs text-slate-500 dark:text-slate-400 hover:text-primary" href="#">Legal Terms</a>
+<a class="text-xs text-slate-500 dark:text-slate-400 hover:text-primary" href="#">API Documentation</a>
+</div>
+</div>
+</footer>
+</div>
+</div>
+</body></html>
+
+
+
+

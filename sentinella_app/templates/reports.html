@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Theft Incident Reports &amp; Archive</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2547f4",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#101322",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2547f433;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 border-r border-slate-200 dark:border-primary/20 flex flex-col bg-white dark:bg-background-dark/50 hidden lg:flex">
+<div class="p-6 flex items-center gap-3">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">shield</span>
+</div>
+<h2 class="text-xl font-bold tracking-tight text-red-600">Sentinella</h2>
+</div>
+<nav class="flex-1 px-4 space-y-2 mt-4">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-primary/10 transition-colors" href="{% url 'dashboard' %}">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-medium text-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-primary/10 transition-colors" href="{% url 'live_monitor' %}">
+<span class="material-symbols-outlined">videocam</span>
+<span class="font-medium text-sm">Live Feed</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-primary" href="#">
+    <span class="material-symbols-outlined">description</span>
+    <span class="font-medium text-sm">Reports & Archive</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-primary/10 transition-colors" href="{% url 'heatmap' %}">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="font-medium text-sm">Heatmaps</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-primary/10 transition-colors" href="{% url 'settings' %}">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-medium text-sm">Settings</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<div class="bg-primary/5 rounded-xl p-4 border border-primary/10">
+<p class="text-xs text-slate-500 dark:text-slate-400 mb-2">Station Status</p>
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-emerald-500 animate-pulse"></div>
+<span class="text-sm font-semibold uppercase tracking-wider">Station 04 Online</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-hidden">
+<!-- Top Nav -->
+<header class="h-16 border-b border-slate-200 dark:border-primary/20 flex items-center justify-between px-8 bg-white/50 dark:bg-background-dark/50 backdrop-blur-md">
+<div class="flex items-center gap-4 flex-1 max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+<input class="w-full bg-slate-100 dark:bg-primary/5 border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/50 transition-all" placeholder="Search by incident ID, staff, or keywords..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="size-10 rounded-lg hover:bg-slate-100 dark:hover:bg-primary/10 flex items-center justify-center relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-rose-500 rounded-full border-2 border-white dark:border-background-dark"></span>
+</button>
+<div class="h-8 w-[1px] bg-slate-200 dark:bg-primary/20 mx-2"></div>
+<div class="flex items-center gap-3">
+<div class="text-right hidden sm:block">
+<p class="text-xs font-bold">Alex Thorne</p>
+<p class="text-[10px] text-slate-500">Security Lead</p>
+</div>
+<div class="size-10 rounded-full bg-primary/20 overflow-hidden border-2 border-primary/20">
+<img class="w-full h-full object-cover" data-alt="Security lead portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATAyqKabNftZbUo_KIIeRO7Dazv43J_kHnc_onHmE5hYfC48lJu8AQhy4D7Rp-3N5bUOECuPjJNcERaCLT02VfKmCNhQ3JSLAuVdP9c8N2CwDLW_3ISkeDDEQMGW-qnELRAG7sND0BK5qvjabd8l08ngjabstwU1yj7cmb_cR6JGXYvHESvsHTueqLyFIZkWO81QQUSOUd1jBWCKyR59GGDi_FG2ykc8mnn1kPG-7M6nib23ZFxd1qBSdPv3MTxWBMLrdlUWUf4mE"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Scrollable Dashboard -->
+<div class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+<div>
+<h1 class="text-3xl font-black tracking-tight mb-2 text-red-600 dark:text-red-500">Theft Reports</h1>
+<p class="text-slate-500 dark:text-slate-400">Review, investigate, and export historical incident data for security auditing.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 bg-slate-100 dark:bg-primary/10 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-slate-200 dark:hover:bg-primary/20 transition-all border border-slate-200 dark:border-primary/20">
+<span class="material-symbols-outlined text-sm">download</span>
+                        Export CSV
+                    </button>
+<button class="flex items-center gap-2 bg-[rgb(188,110,230)] text-white px-5 py-2 rounded-lg text-sm font-semibold hover:shadow-lg hover:shadow-primary/30 transition-all">
+<span class="material-symbols-outlined text-sm">picture_as_pdf</span>
+                        Export Full PDF
+                    </button>
+</div>
+</div>
+<!-- Filters Bar -->
+<div class="bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 rounded-2xl p-4 mb-8 flex flex-wrap items-center gap-4">
+<div class="flex flex-col gap-1.5 min-w-[160px]">
+<span class="text-[10px] uppercase font-bold text-slate-400 px-1">Date Range</span>
+<button class="flex items-center justify-between bg-slate-50 dark:bg-background-dark/50 px-3 py-2 rounded-lg border border-slate-200 dark:border-primary/10 text-sm">
+<span>Last 30 Days</span>
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+</button>
+</div>
+<div class="flex flex-col gap-1.5 min-w-[140px]">
+<span class="text-[10px] uppercase font-bold text-slate-400 px-1">Severity</span>
+<button class="flex items-center justify-between bg-slate-50 dark:bg-background-dark/50 px-3 py-2 rounded-lg border border-slate-200 dark:border-primary/10 text-sm">
+<span>All Levels</span>
+<span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+</button>
+</div>
+<div class="flex flex-col gap-1.5 min-w-[160px]">
+<span class="text-[10px] uppercase font-bold text-slate-400 px-1">Department</span>
+<button class="flex items-center justify-between bg-slate-50 dark:bg-background-dark/50 px-3 py-2 rounded-lg border border-slate-200 dark:border-primary/10 text-sm">
+<span>Main Warehouse</span>
+<span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+</button>
+</div>
+<div class="flex flex-col gap-1.5 min-w-[140px]">
+<span class="text-[10px] uppercase font-bold text-slate-400 px-1">Status</span>
+<button class="flex items-center justify-between bg-slate-50 dark:bg-background-dark/50 px-3 py-2 rounded-lg border border-slate-200 dark:border-primary/10 text-sm">
+<span>All Status</span>
+<span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+</button>
+</div>
+<button class="mt-5 ml-auto text-primary text-sm font-bold hover:underline">Clear All Filters</button>
+</div>
+<!-- Incidents Table -->
+<div class="bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 rounded-2xl overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-slate-200 dark:border-primary/10 bg-slate-50/50 dark:bg-primary/10 text-xs font-bold uppercase tracking-widest text-slate-500">
+<th class="px-6 py-4">Incident ID</th>
+<th class="px-6 py-4">Footage Thumbnail</th>
+<th class="px-6 py-4">Timestamp</th>
+<th class="px-6 py-4">Department</th>
+<th class="px-6 py-4">Severity</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-primary/5">
+<!-- Incident Row 1 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<span class="font-mono text-sm font-semibold">#INC-9942</span>
+</td>
+<td class="px-6 py-4">
+<div class="relative size-16 rounded-lg overflow-hidden border border-slate-200 dark:border-primary/20 shadow-sm">
+<img class="w-full h-full object-cover" data-alt="CCTV capture of warehouse aisle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuASxyqQgIT1VH44Vh9vgZv03yeZhYWc8bckiM8Xhw1PVPFPSwQe2CPobQcpp7gZzHeGSOalrM9gW8MCnQsyB-xMDixmqkxMnLdz5_we-P8p4ms8PP__Vk0vjtsdwvDaWSWulLkv2VMZ3G7jknRzD__YkyrIdpQcFfAeBzIW3Lt-f_k_-FpvoIKjVigzhaZUisp73w_9QfcCP9QUjyD4A7DVF2dyRWpfd2YKUsjHupiUAQFahERr2Gy4uOSzol_Dn4WAiys4JGYa-ug"/>
+<div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white text-lg">play_circle</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="text-sm font-medium">Oct 24, 2023</p>
+<p class="text-[10px] text-slate-500 uppercase tracking-tighter">02:14:55 AM</p>
+</td>
+<td class="px-6 py-4 text-sm">Zone A - Electronics</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-rose-100 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-500/30">High Risk</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="size-1.5 rounded-full bg-amber-500"></div>
+<span class="text-xs font-semibold">Pending Review</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:bg-primary/10 p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Incident Row 2 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<span class="font-mono text-sm font-semibold">#INC-8831</span>
+</td>
+<td class="px-6 py-4">
+<div class="relative size-16 rounded-lg overflow-hidden border border-slate-200 dark:border-primary/20 shadow-sm">
+<img class="w-full h-full object-cover" data-alt="CCTV capture of loading dock" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9KappAHALpCSQHpTPYvOhOdUSIlf0iK80Gdn6iT5l-VK6zsEVOkojCEiqqkHr-hWCZOdESPg8UhDTqzNiZUuTW6vVjEmML6suoOcV0MIS39rUT70Sba2BDD37qTv5PHk4D76FstLIZEOHycKuxWyFVAFTjptxi2QiZiSW-ZMByQV4bK8NfM1Y9LDtMiPw8PtdCYr_9768htdm_1fV-7foxXj_rlhLl1LFquBJaRhtLYLC79hr1KCXlUFYXUUye6YqOukV6vj-3sg"/>
+<div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white text-lg">play_circle</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="text-sm font-medium">Oct 22, 2023</p>
+<p class="text-[10px] text-slate-500 uppercase tracking-tighter">11:05:12 PM</p>
+</td>
+<td class="px-6 py-4 text-sm">Loading Bay 02</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-blue-100 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-500/30">Moderate</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-emerald-500">
+<span class="material-symbols-outlined text-xs">check_circle</span>
+<span class="text-xs font-semibold">Resolved</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:bg-primary/10 p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Incident Row 3 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4">
+<span class="font-mono text-sm font-semibold">#INC-8712</span>
+</td>
+<td class="px-6 py-4">
+<div class="relative size-16 rounded-lg overflow-hidden border border-slate-200 dark:border-primary/20 shadow-sm">
+<img class="w-full h-full object-cover" data-alt="CCTV capture of office corridor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCW9IieXOJVFJ9xHvYszFLbgya65O6i9W-IVhKFGgiGsGWVzqbiqX32S0StQRFxLWVLq9FhVLmmcSgp3OU8BTBY4UkORhCYfaCxyQzWiwoP0sWYMItHduegfJ4sQmGIH2J6zi6TfGoP-FisPM7Zmv2mkLpBfk8ehFjsgMgdPo0RxHsZWczQTWW6U4umw_8oH1BcKU9Xhg7jFTfbNCzrBqT8cmO4lHHABn8E0Hh1aKhvsqsgjluDL18OTqtiIE3-lQQuJR3NyxhoJIU"/>
+<div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white text-lg">play_circle</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="text-sm font-medium">Oct 20, 2023</p>
+<p class="text-[10px] text-slate-500 uppercase tracking-tighter">06:45:00 AM</p>
+</td>
+<td class="px-6 py-4 text-sm">Admin Office North</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-slate-100 dark:bg-slate-500/20 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-500/30">Low Risk</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-emerald-500">
+<span class="material-symbols-outlined text-xs">check_circle</span>
+<span class="text-xs font-semibold">Resolved</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:bg-primary/10 p-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 border-t border-slate-200 dark:border-primary/10 flex items-center justify-between">
+<p class="text-xs text-slate-500">Showing <span class="font-bold text-slate-900 dark:text-white">1-10</span> of 142 incidents</p>
+<div class="flex gap-2">
+<button class="size-8 rounded border border-slate-200 dark:border-primary/20 flex items-center justify-center text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="size-8 rounded bg-primary text-white flex items-center justify-center text-xs font-bold">1</button>
+<button class="size-8 rounded border border-slate-200 dark:border-primary/20 flex items-center justify-center text-xs font-bold hover:bg-slate-50 dark:hover:bg-primary/10">2</button>
+<button class="size-8 rounded border border-slate-200 dark:border-primary/20 flex items-center justify-center text-xs font-bold hover:bg-slate-50 dark:hover:bg-primary/10">3</button>
+<button class="size-8 rounded border border-slate-200 dark:border-primary/20 flex items-center justify-center text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Summary Stats -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+<div class="bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 rounded-2xl p-6">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined">trending_down</span>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-500 uppercase">Monthly Trend</p>
+<p class="text-2xl font-bold">-12.5% Incidents</p>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 rounded-2xl p-6">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+<span class="material-symbols-outlined">verified</span>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-500 uppercase">Resolution Rate</p>
+<p class="text-2xl font-bold">94% Success</p>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-primary/5 border border-slate-200 dark:border-primary/10 rounded-2xl p-6">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center">
+<span class="material-symbols-outlined">history_toggle_off</span>
+</div>
+<div>
+<p class="text-xs font-bold text-slate-500 uppercase">Avg. Investigation</p>
+<p class="text-2xl font-bold">4.2 Hours</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
+
+
+

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sentinella Notification Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#257bf4",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Header -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 px-6 md:px-10 py-3 bg-background-light dark:bg-background-dark sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-6">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-red-600 dark:text-red-500 text-xl font-bold leading-tight tracking-tight">Sentinella </h2>
+</div>
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'dashboard' %}">Dashboard</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'incidents' %}">Incident Log</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'floor_map' %}">Floor Maps</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'staff_portal' %}">Staff Portal</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'settings' %}">Settings</a> 
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<label class="hidden sm:flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-slate-400 flex border-none bg-slate-100 dark:bg-slate-800 items-center justify-center pl-4 rounded-l-lg" data-icon="search">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg text-slate-900 dark:text-white focus:outline-0 focus:ring-1 focus:ring-primary border-none bg-slate-100 dark:bg-slate-800 h-full placeholder:text-slate-400 px-4 pl-2 text-sm font-normal" placeholder="Search logs..." value=""/>
+</div>
+</label>
+<button class="text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="User profile avatar circle" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA7ASrpxX-IdsLY0jaSe-9Gm4FgCcGD6csKvQHFfZebFhaCWTnwmmuaSA3ZZAb7UcKxNSkHO3FXQIg-oGPkU5tyUiC3JyhcbeEtxIc6j0DD2Ffzn6GhFXIUTds6r3VlpduakkELRr2nbge4DQnENxyfBVirdScWVXuSD3B7hDQppuZd1_jUY-rv2ugzLVRnoBDgvXsdDQjqcF21CFonwgQboRhLghTnaAPFmrTknv_hK_yRtPB6nlzVCqIrAKp1d4BCG8Po79Bu5EGU");'></div>
+</div>
+</header>
+<main class="flex flex-1 justify-center py-8">
+<div class="layout-content-container flex flex-col max-w-[1024px] flex-1 px-6">
+<!-- Page Title Area -->
+<div class="flex flex-wrap justify-between items-end gap-4 pb-8">
+<div class="flex flex-col gap-2">
+
+<h1 class="text-green-600 dark:text-green-400 text-4xl font-black leading-tight tracking-tight">Notification Center</h1>
+<p class="text-green-700/70 dark:text-green-600/70 text-base font-normal">Configure how and when your team receives system alerts.</p>    
+</div>
+<button class="bg-[#bc6ee6] hover:bg-[#bc6ee6]/90 text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-all shadow-lg shadow-[#bc6ee6]/20 flex items-center gap-2">
+    <span class="material-symbols-outlined text-sm">add</span>
+    Create New Rule
+</button>
+</div>
+<!-- Tabs -->
+<div class="pb-6">
+<div class="flex border-b border-slate-200 dark:border-slate-800 px-2 gap-8">
+<a class="flex items-center gap-2 border-b-2 border-primary text-primary pb-3 transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">settings_input_component</span>
+<span class="text-sm font-bold">Destinations</span>
+</a>
+<a class="flex items-center gap-2 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 pb-3 transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">account_tree</span>
+<span class="text-sm font-bold">Rule Builder</span>
+</a>
+<a class="flex items-center gap-2 border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 pb-3 transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">history</span>
+<span class="text-sm font-bold">Notification History</span>
+</a>
+</div>
+</div>
+<!-- Active Alert Destinations Section -->
+<section class="mb-10">
+<div class="flex items-center justify-between px-2 pb-4">
+<h2 class="text-slate-900 dark:text-white text-xl font-bold tracking-tight">Alert Destinations</h2>
+<span class="text-xs font-semibold text-slate-400 uppercase tracking-widest">3 Configured</span>
+</div>
+<div class="grid grid-cols-1 gap-3">
+<!-- Email Destination -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/50 rounded-xl px-5 min-h-[80px] py-4 justify-between shadow-sm">
+<div class="flex items-center gap-4">
+<div class="text-primary flex items-center justify-center rounded-xl bg-primary/10 shrink-0 size-12">
+<span class="material-symbols-outlined">mail</span>
+</div>
+<div class="flex flex-col justify-center">
+<p class="text-slate-900 dark:text-white text-base font-semibold">Email Notifications</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm">ops-team@sentinella.io, dev-leads@sentinella.io</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<label class="relative flex h-7 w-12 cursor-pointer items-center rounded-full border-none bg-slate-200 dark:bg-slate-700 p-1 has-[:checked]:justify-end has-[:checked]:bg-primary transition-all">
+<div class="h-5 w-5 rounded-full bg-white shadow-md"></div>
+<input checked="" class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+</div>
+<!-- SMS Destination -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/50 rounded-xl px-5 min-h-[80px] py-4 justify-between shadow-sm">
+<div class="flex items-center gap-4">
+<div class="text-emerald-500 flex items-center justify-center rounded-xl bg-emerald-500/10 shrink-0 size-12">
+<span class="material-symbols-outlined">sms</span>
+</div>
+<div class="flex flex-col justify-center">
+<p class="text-slate-900 dark:text-white text-base font-semibold">SMS Alerts (Urgent)</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm">+1 (555) 0123-4567, +1 (555) 0987-6543</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<label class="relative flex h-7 w-12 cursor-pointer items-center rounded-full border-none bg-slate-200 dark:bg-slate-700 p-1 has-[:checked]:justify-end has-[:checked]:bg-primary transition-all">
+<div class="h-5 w-5 rounded-full bg-white shadow-md"></div>
+<input checked="" class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+</div>
+<!-- Mobile App Destination -->
+<div class="flex items-center gap-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/50 rounded-xl px-5 min-h-[80px] py-4 justify-between shadow-sm opacity-60">
+<div class="flex items-center gap-4">
+<div class="text-slate-500 flex items-center justify-center rounded-xl bg-slate-500/10 shrink-0 size-12">
+<span class="material-symbols-outlined">smartphone</span>
+</div>
+<div class="flex flex-col justify-center">
+<p class="text-slate-900 dark:text-white text-base font-semibold">Mobile App Push</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm">8 active devices registered</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<label class="relative flex h-7 w-12 cursor-pointer items-center rounded-full border-none bg-slate-200 dark:bg-slate-700 p-1 has-[:checked]:justify-end has-[:checked]:bg-primary transition-all">
+<div class="h-5 w-5 rounded-full bg-white shadow-md"></div>
+<input class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+</div>
+</div>
+</section>
+<!-- Rule Builder Preview -->
+<section class="mb-10">
+<div class="flex items-center justify-between px-2 pb-4">
+<h2 class="text-slate-900 dark:text-white text-xl font-bold tracking-tight">Active Rules</h2>
+<a class="text-primary text-sm font-semibold hover:underline" href="#">Manage all rules</a>
+</div>
+<div class="bg-slate-100 dark:bg-slate-800/50 p-6 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
+<div class="flex flex-col gap-4">
+<div class="flex flex-wrap items-center gap-3 bg-white dark:bg-background-dark p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<span class="bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded text-sm font-bold">IF</span>
+<span class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 px-3 py-1 rounded text-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">error</span> Critical Alert
+                                </span>
+<span class="bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded text-sm font-bold">THEN</span>
+<span class="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-3 py-1 rounded text-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">mail</span> Notify Admin
+                                </span>
+<div class="ml-auto flex gap-2">
+<span class="text-xs text-slate-400 font-medium">Triggered 42 times this week</span>
+<button class="text-slate-400 hover:text-slate-600"><span class="material-symbols-outlined text-[18px]">more_vert</span></button>
+</div>
+</div>
+<div class="flex flex-wrap items-center gap-3 bg-white dark:bg-background-dark p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+<span class="bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded text-sm font-bold">IF</span>
+<span class="bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 px-3 py-1 rounded text-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">warning</span> Warning
+                                </span>
+<span class="bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded text-sm font-bold">THEN</span>
+<span class="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-3 py-1 rounded text-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">mail</span> Email Digest (Daily)
+                                </span>
+<div class="ml-auto flex gap-2">
+<span class="text-xs text-slate-400 font-medium">Triggered 128 times this week</span>
+<button class="text-slate-400 hover:text-slate-600"><span class="material-symbols-outlined text-[18px]">more_vert</span></button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- History Section -->
+<section>
+<div class="flex items-center justify-between px-2 pb-4">
+<h2 class="text-slate-900 dark:text-white text-xl font-bold tracking-tight">Recent Notifications</h2>
+<button class="text-slate-500 dark:text-slate-400 text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">filter_list</span> Filter
+                        </button>
+</div>
+<div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50">
+<th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Time</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Alert Type</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Destination</th>
+<th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr>
+<td class="px-6 py-4 text-sm font-medium">2 mins ago</td>
+<td class="px-6 py-4 text-sm">CPU Spike: Production DB</td>
+<td class="px-6 py-4 text-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[16px]">mail</span>
+                                            Email
+                                        </div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400">
+<span class="size-1.5 rounded-full bg-emerald-500"></span> Delivered
+                                        </span>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4 text-sm font-medium">15 mins ago</td>
+<td class="px-6 py-4 text-sm">Failed Login: Root Admin</td>
+<td class="px-6 py-4 text-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-emerald-500 text-[16px]">sms</span>
+                                            SMS
+                                        </div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400">
+<span class="size-1.5 rounded-full bg-emerald-500"></span> Delivered
+                                        </span>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4 text-sm font-medium">1 hour ago</td>
+<td class="px-6 py-4 text-sm">Memory Leak: API Cluster</td>
+<td class="px-6 py-4 text-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[16px]">mail</span>
+                                            Email
+                                        </div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-semibold bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400">
+<span class="size-1.5 rounded-full bg-red-500"></span> Bounced
+                                        </span>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4 text-sm font-medium">3 hours ago</td>
+<td class="px-6 py-4 text-sm">Disk Usage &gt; 90%</td>
+<td class="px-6 py-4 text-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400 text-[16px]">smartphone</span>
+                                            Mobile App
+                                        </div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
+<span class="size-1.5 rounded-full bg-slate-400"></span> Suppressed
+                                        </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="flex justify-center mt-6">
+<button class="text-sm font-semibold text-primary hover:text-primary/80 transition-colors">View all 1,284 logs</button>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer-like Status Bar -->
+<footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-6 py-3 flex items-center justify-between text-xs text-slate-500 font-medium">
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1.5">
+<span class="size-2 rounded-full bg-emerald-500"></span>
+                    Systems Operational
+                </span>
+<span class="h-3 w-px bg-slate-200 dark:bg-slate-800"></span>
+<span>Latency: 45ms</span>
+</div>
+<div class="flex gap-4">
+<a class="hover:text-primary transition-colors" href="#">Documentation</a>
+<a class="hover:text-primary transition-colors" href="#">Support</a>
+<span>© 2024 Sentinella Inc.</span>
+</div>
+</footer>
+</div>
+</div>
+</body></html>

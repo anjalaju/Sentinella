@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A comprehensive guide to theft detection in supermarkets, exploring types of theft and modern prevention technologies.">
+    <title>Theft Detection in Supermarkets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --accent-1: #3b82f6;
+            --accent-2: #8b5cf6;
+            --gradient: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            --glow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.15), transparent 25%);
+            background-attachment: fixed;
+        }
+
+        /* Glassmorphism Classes */
+        .glass {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        header {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 10;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+            line-height: 1.2;
+        }
+
+        .intro-text {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            animation: bounce 2s infinite;
+            color: var(--text-muted);
+            font-size: 2rem;
+        }
+
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        /* Grid Layouts */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Cards */
+        .card {
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--glow);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .card-desc {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            flex-grow: 1;
+        }
+        
+        .card-list {
+            margin-top: 1.5rem;
+            list-style: none;
+            flex-grow: 1;
+        }
+
+        .card-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        .card-list li::before {
+            content: '•';
+            color: var(--accent-1);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem;
+            border-top: 1px solid var(--card-border);
+            margin-top: 4rem;
+            color: var(--text-muted);
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Number Badge */
+        .number-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 3.5rem;
+            font-weight: 800;
+            opacity: 0.05;
+            color: #fff;
+            transition: opacity 0.3s, color 0.3s;
+            z-index: 0;
+        }
+
+        .card:hover .number-badge {
+            opacity: 0.2;
+            color: var(--accent-2);
+        }
+        
+        .card-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* Status Pills */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            align-self: flex-start;
+        }
+
+        /* Top Right Button */
+        .top-right-btn {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            padding: 0.75rem 1.75rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: red; /* Text color changed to red */
+            background: #a78bfa; /* Deeper lavender so it doesn't look white */
+            border: 1px solid var(--accent-2);
+            border-radius: 8px;
+            text-decoration: none;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .top-right-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+            background: #e0b0ff; /* Bright lavender on hover */
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <a href="{% url 'index' %}" class="top-right-btn">Index</a>
+
+    <!-- Hero Section -->
+    <header>
+        <div class="hero-content glass" style="padding: 3.5rem 2rem;">
+            <div class="badge" style="margin: 0 auto 1.5rem auto; display: block; width: max-content; color: red; border-color: red; background: rgba(255, 0, 0, 0.1);">Security Overview</div>
+            <h1 style="background: none; -webkit-text-fill-color: #ff6b6b; color: #ff6b6b; text-shadow: 0 0 30px rgba(255, 107, 107, 0.3);">Theft Detection<br>in Supermarkets</h1>
+            <p class="intro-text">
+                Theft detection in supermarkets refers to the use of technology and security strategies to identify, prevent, and reduce shoplifting, employee theft, and inventory loss. Retail theft is one of the major causes of inventory shrinkage, which directly affects profitability.
+            </p>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fa-solid fa-chevron-down"></i>
+        </div>
+    </header>
+
+    <!-- Types of Theft Section -->
+    <section id="types">
+        <h2 class="section-title">Types of Theft</h2>
+        <div class="grid-container">
+            <!-- Type 1 -->
+            <div class="card glass">
+                <div class="card-content">
+                    <i class="fa-solid fa-person-walking-arrow-right card-icon"></i>
+                    <h3 class="card-title">Shoplifting</h3>
+                    <p class="card-desc">Customers hiding products and leaving without paying.</p>
+                </div>
+            </div>
+            
+            <!-- Type 2 -->
+            <div class="card glass">
+                <div class="card-content">
+                    <i class="fa-solid fa-user-tie card-icon"></i>
+                    <h3 class="card-title">Employee Theft</h3>
+                    <p class="card-desc">Staff stealing products or manipulating billing systems.</p>
+                </div>
+            </div>
+
+            <!-- Type 3 -->
+            <div class="card glass">
+                <div class="card-content">
+                    <i class="fa-solid fa-barcode card-icon"></i>
+                    <h3 class="card-title">Barcode Switching</h3>
+                    <p class="card-desc">Replacing product barcodes with cheaper ones to pay significantly less than the item's actual value.</p>
+                </div>
+            </div>
+
+            <!-- Type 4 -->
+            <div class="card glass">
+                <div class="card-content">
+                    <i class="fa-solid fa-handshake-angle card-icon"></i>
+                    <h3 class="card-title">Sweethearting</h3>
+                    <p class="card-desc">Cashiers intentionally avoiding scanning certain items for friends, family, or accomplices at the checkout.</p>
+                </div>
+            </div>
+
+            <!-- Type 5 -->
+            <div class="card glass">
+                <div class="card-content">
+                    <i class="fa-solid fa-money-bill-transfer card-icon"></i>
+                    <h3 class="card-title">Return Fraud</h3>
+                    <p class="card-desc">Returning stolen, used, or counterfeit items for cash, store credit, or an exchange.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technologies Section -->
+    <section id="technologies">
+        <h2 class="section-title">Detection Technologies</h2>
+        <div class="grid-container">
+            
+            <!-- Tech 1 -->
+            <div class="card glass">
+                <div class="number-badge">01</div>
+                <div class="card-content">
+                    <i class="fa-solid fa-video card-icon"></i>
+                    <h3 class="card-title">CCTV Surveillance</h3>
+                    <ul class="card-list">
+                        <li>High-definition cameras monitor aisles, billing counters, and entrances.</li>
+                        <li>AI-powered cameras detect suspicious behavior like hiding items.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Tech 2 -->
+            <div class="card glass">
+                <div class="number-badge">02</div>
+                <div class="card-content">
+                    <i class="fa-solid fa-satellite-dish card-icon"></i>
+                    <h3 class="card-title">RFID</h3>
+                    <p class="card-desc" style="margin-bottom: 5px; flex-grow: 0; font-weight: 500;">Radio Frequency Identification</p>
+                    <ul class="card-list">
+                        <li>Products contain specific tracking tags.</li>
+                        <li>Sensors at exit gates automatically trigger alarms if unpaid items pass through.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Tech 3 -->
+            <div class="card glass">
+                <div class="number-badge">03</div>
+                <div class="card-content">
+                    <i class="fa-solid fa-tag card-icon"></i>
+                    <h3 class="card-title">EAS Systems</h3>
+                    <p class="card-desc" style="margin-bottom: 5px; flex-grow: 0; font-weight: 500;">Electronic Article Surveillance</p>
+                    <ul class="card-list">
+                        <li>Physical security tags firmly attached to products.</li>
+                        <li>Dedicated alarm systems at store exits detect unpaid items instantly.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Tech 4 -->
+            <div class="card glass">
+                <div class="number-badge">04</div>
+                <div class="card-content">
+                    <i class="fa-solid fa-brain card-icon"></i>
+                    <h3 class="card-title">AI & Machine Learning</h3>
+                    <ul class="card-list">
+                        <li>Behavior analysis using computer vision.</li>
+                        <li>Detects unusual movements or repeated suspicious actions.</li>
+                        <li>Can identify patterns in billing data to detect employee fraud.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Tech 5 -->
+            <div class="card glass">
+                <div class="number-badge">05</div>
+                <div class="card-content">
+                    <i class="fa-solid fa-cash-register card-icon"></i>
+                    <h3 class="card-title">Smart POS Monitoring</h3>
+                    <ul class="card-list">
+                        <li>Monitors unusual, rapid, or irregular transactions at checkout.</li>
+                        <li>Automatically flags suspicious refunds, zero-dollar transactions, or excessive price overrides.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Loss Prevention & Security Systems. Designed for Supermarkets.</p>
+    </footer>
+
+    <script>
+        // Simple scroll animation observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = `opacity 0.6s ease-out ${index * 0.1}s, transform 0.6s ease-out ${index * 0.1}s, box-shadow 0.3s, border-color 0.3s`;
+            observer.observe(card);
+        });
+
+        // Add glow effect tracking mouse movement on cards
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.background = `
+                    radial-gradient(circle at ${x}px ${y}px, rgba(139, 92, 246, 0.15), transparent 40%),
+                    var(--card-bg)
+                `;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.background = 'var(--card-bg)';
+            });
+        });
+    </script>
+</body>
+</html>

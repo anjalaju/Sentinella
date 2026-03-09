@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Live Security Monitor Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between border-b border-primary/20 bg-background-light dark:bg-background-dark px-8 py-3">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined text-3xl">security</span>
+<h2 class="text-xl font-bold leading-tight tracking-tight text-red-500">Sentinella <span class="text-slate-400 font-normal"></span></h2>
+</div>
+<div class="h-6 w-px bg-primary/20"></div>
+<nav class="flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-400 hover:text-red-500 dark:hover:text-red-500 transition-colors text-sm font-medium" href="{% url 'dashboard' %}">Dashboard</a>
+<a class="text-primary text-sm font-bold border-b-2 border-primary pb-1" href="#">Live Monitor</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'incidents' %}">Incident Log</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'floor_map' %}">Floor Maps</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'staff_portal' %}">Staff Portal</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'settings' %}">Settings</a> 
+
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-green-500/10 text-green-500 rounded-full text-xs font-bold uppercase tracking-wider">
+<span class="size-2 bg-green-500 rounded-full animate-pulse"></span>
+                    System Online
+                </div>
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+<input class="w-full bg-primary/5 border border-primary/20 rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-1 focus:ring-primary focus:outline-none" placeholder="Search cameras or staff..."/>
+</div>
+<a href="{% url 'notification' %}" class="flex items-center">
+  <span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-white">notifications</span>
+</a>
+<div class="size-10 rounded-full bg-primary/20 border border-primary/40 overflow-hidden" data-alt="Security Officer Avatar Profile Picture">
+<img alt="Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlXIPDMxh2sFPSEmViX-XtiyvVmQc_smw-VGA_zKkyyEbh4o3sA7EmupzCoC-3b_e18llkhe-bxSL7MhPL6OegdMlT0QPVM5AlACqMGL5s39imwUH5FWgxnEeBbymSflepcxwk2QyVJis3PlLOqJUnHcSm-pjQsSwl_Y1WzoQEmFZnt06OMzgVcQYgUnLnaN-mlfFydZfFFljQ640t0L0D8F-BBTZRRv2E7eB6_Cvd1GWtMRxTKY7zN_7FFsb4q3CU4vHz6acWiHIy"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex flex-1 overflow-hidden p-4 gap-4">
+<!-- Left Side: Live Feed -->
+<div class="flex-[3] flex flex-col gap-4">
+<div class="relative flex-1 bg-slate-900 rounded-xl overflow-hidden border-2 border-primary/30 shadow-2xl group">
+<!-- Video Overlay: AI Bounding Boxes -->
+<div class="absolute inset-0 z-10 pointer-events-none">
+<!-- Normal Detection -->
+<div class="absolute top-[20%] left-[15%] w-32 h-64 border-2 border-green-500/50 rounded-sm">
+<span class="absolute -top-6 left-0 bg-green-500 text-white text-[10px] px-2 py-0.5 rounded-t-sm uppercase font-bold">Customer #842</span>
+</div>
+<!-- Suspicious Detection -->
+<div class="absolute top-[35%] left-[55%] w-40 h-72 border-2 border-red-500 rounded-sm ring-4 ring-red-500/20 shadow-[0_0_20px_rgba(239,68,68,0.5)]">
+<span class="absolute -top-6 left-0 bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-t-sm uppercase font-bold animate-pulse">Suspicious Activity (94%)</span>
+</div>
+</div>
+<!-- Live Stream -->
+<div class="absolute inset-0 flex items-center justify-center bg-slate-950" data-alt="CCTV live feed showing supermarket aisle 4 with AI overlays" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB4DHIc8nQpYDHZRJYD1mQJ5tkQE_ZlT_UVl1CR3zkEasC07l52gP-KAWcT53KJ09a8bWtYnFrVlkYKQhsjIo7Y-OqddVqo16qWhGTXY3R8sBFwW1WmodI830EFrNqhrjrqvXgk65FZNyWtmkMYblpWI2Mx-yEfhkFaInk-jih4yKWtnpYiXHzsRjPTxyYd1-KS_nz_Ece7HasUiurLWpBZUUQxj5FleQpKLz1COob-WC6e3SK6vS79POzjnSTe-aJzwT46l2B4wkiN");'>
+<div class="absolute top-4 left-4 bg-black/60 backdrop-blur-md text-white px-3 py-1.5 rounded-lg flex items-center gap-2 border border-white/10">
+<span class="material-symbols-outlined text-red-500 text-sm">videocam</span>
+<span class="text-xs font-bold uppercase tracking-widest">Aisle 4 - Cosmetics</span>
+</div>
+<div class="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md text-white px-3 py-1.5 rounded-lg flex items-center gap-4 border border-white/10">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">visibility</span>
+<span class="text-[10px]">1,240 Lux</span>
+</div>
+<div class="flex items-center gap-1 text-green-400">
+<span class="material-symbols-outlined text-xs">analytics</span>
+<span class="text-[10px]">AI Latency: 12ms</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Health & Quick Actions Bar -->
+<div class="h-24 bg-primary/5 border border-primary/20 rounded-xl flex items-center justify-between px-6">
+<div class="flex gap-8">
+<div class="flex flex-col gap-1">
+<span class="text-[10px] uppercase font-bold text-slate-500">Global System Health</span>
+<div class="flex items-center gap-2">
+<div class="flex gap-0.5">
+<div class="w-1.5 h-4 bg-primary rounded-full"></div>
+<div class="w-1.5 h-4 bg-primary rounded-full"></div>
+<div class="w-1.5 h-4 bg-primary rounded-full"></div>
+<div class="w-1.5 h-4 bg-primary/20 rounded-full"></div>
+</div>
+<span class="text-sm font-semibold">92% Efficiency</span>
+</div>
+</div>
+<div class="flex flex-col gap-1 border-l border-primary/20 pl-8">
+<span class="text-[10px] uppercase font-bold text-slate-500">Active Sensors</span>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">sensors</span>
+<span class="text-sm font-semibold text-slate-200">124/128 Active</span>
+</div>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-100 px-4 py-2.5 rounded-lg font-bold text-sm border border-slate-600 transition-all">
+<span class="material-symbols-outlined">person_alert</span>
+                            Notify Staff
+                        </button>
+<button class="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-2.5 rounded-lg font-bold text-sm shadow-lg shadow-red-900/20 transition-all">
+<span class="material-symbols-outlined">campaign</span>
+                            Sound Alarm
+                        </button>
+<button class="flex items-center gap-2 bg-purple-500 hover:bg-purple-600 text-white px-4 py-2.5 rounded-lg font-bold text-sm transition-all">
+<span class="material-symbols-outlined">lock</span>
+                            Emergency Lockout
+                        </button>
+</div>
+</div>
+</div>
+<!-- Right Side: Sidebar Alerts -->
+<div class="flex-1 flex flex-col gap-4 min-w-[320px]">
+<div class="flex items-center justify-between px-2">
+<h3 class="text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-red-500">warning</span>
+                        Recent Alerts
+                    </h3>
+<button class="text-primary text-xs font-bold hover:underline">Clear All</button>
+</div>
+<div class="flex-1 overflow-y-auto pr-2 flex flex-col gap-3 custom-scrollbar">
+<!-- Critical Alert -->
+<div class="bg-red-500/10 border border-red-500/30 p-3 rounded-xl flex flex-col gap-3 ring-2 ring-red-500 animate-pulse">
+<div class="flex justify-between items-start">
+<span class="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded font-bold">CRITICAL</span>
+<span class="text-[10px] text-slate-400">12s ago</span>
+</div>
+<div class="w-full aspect-video bg-slate-800 rounded-lg overflow-hidden border border-red-500/20" data-alt="Snapshot of suspect concealing item in aisle 4" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCPy9Nri5K3hArfpDBapiq7YUeuTyjuM3Yxy7xcEpVxAnw_RAaX-CdvO_LvFjNg9Ca2HLNFWWietUlx3RC9gP32ltyjtYxStegZKaKKj2T2NHHk4WylEWCSVibtC1cplvoMJ9krU-YiaEJSPVlmq71EzqpRjN_lANGDFvlJDPMevGvrSbPYzFOHzb56UFRE8JyRGCyzA7bAlsoLyhlqAqr3BdxMi6Tf76jnQOrDeyQGb44etL39etO8d_r31rV6khchgwQ8nlPqMQ4y'); background-size: cover;"></div>
+<div>
+<p class="text-sm font-bold text-slate-100">Possible Concealment</p>
+<p class="text-xs text-slate-400">Aisle 4 • Confidence: 94%</p>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-1.5 bg-red-500 text-white text-xs font-bold rounded hover:bg-red-600 transition-colors uppercase tracking-wider">Dispatch</button>
+<button class="px-2 py-1.5 bg-slate-800 text-slate-400 rounded hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">close</span>
+</button>
+</div>
+</div>
+<!-- Medium Alert -->
+<div class="bg-primary/5 border border-primary/20 p-3 rounded-xl flex flex-col gap-3 hover:border-primary/40 transition-all cursor-pointer group">
+<div class="flex justify-between items-start">
+<span class="bg-primary/20 text-primary text-[10px] px-2 py-0.5 rounded font-bold uppercase">Activity</span>
+<span class="text-[10px] text-slate-400">4m ago</span>
+</div>
+<div class="w-full aspect-video bg-slate-800 rounded-lg overflow-hidden border border-primary/10" data-alt="Snapshot of loitering in entrance zone" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA9ph26ypcIy2-Eo9LPmaLIdlBHLdutt5XXXnOuBF-B_9HISUbaJYm9AE83Zt3bspuT_a7MUU-WEZOt7ghc4bs_YTtZP56B9FdjqJ9_PKhwu4DqbPp6piSL8_dwEBv9aznH8IIDvlJZFs54bex6svmAa67zlml9Si5CK3HGWYYEnFMjVmnSBnBXl-1QCt7eB2ypzWD6IajMWKjWsYrZR_iNmzMSNhtAjAvy26XppfhscRta8ElU67cc6iBxPqORoWbyTP9FE288VujS'); background-size: cover;"></div>
+<div>
+<p class="text-sm font-bold text-slate-100">Unusual Loitering</p>
+<p class="text-xs text-slate-400">Entrance • Confidence: 82%</p>
+</div>
+</div>
+<!-- Lower Alert -->
+<div class="bg-primary/5 border border-primary/20 p-3 rounded-xl flex flex-col gap-3 hover:border-primary/40 transition-all cursor-pointer">
+<div class="flex justify-between items-start">
+<span class="bg-primary/20 text-primary text-[10px] px-2 py-0.5 rounded font-bold uppercase">System</span>
+<span class="text-[10px] text-slate-400">12m ago</span>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-100">Camera #24 Obstruction</p>
+<p class="text-xs text-slate-400">Back Storage • View partially blocked</p>
+</div>
+</div>
+<!-- New Alert Snapshot -->
+<div class="bg-primary/5 border border-primary/20 p-3 rounded-xl flex flex-col gap-3 hover:border-primary/40 transition-all cursor-pointer">
+<div class="flex justify-between items-start">
+<span class="bg-primary/20 text-primary text-[10px] px-2 py-0.5 rounded font-bold uppercase">Item</span>
+<span class="text-[10px] text-slate-400">18m ago</span>
+</div>
+<div class="w-full aspect-video bg-slate-800 rounded-lg overflow-hidden border border-primary/10" data-alt="Snapshot of abandoned item in checkout area" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDufoulD1JJUwV8Fx5hCR04MsVTWhSabeY2JpC7aWcFlLiz_89mDgy76DYAnZwwkJNwz_gCDADEkRIg-qScQ7QzN95R-0N_E5_AI58tur97vJHfNm7nhkZezl-cJK9tezO9c__JcLu2Ev0JNPAqMALdsQIRfKFdmpnVS7Oj0X7Xzrp70mFdWypDWHRfy2EJXpWReqnAc19wZOQLL9vJFO3XEQMbI4wRCSj9DtNfUKJsETQ6-HYxywlxl68w35wv8Zv5cjmukHq-6dZQ'); background-size: cover;"></div>
+<div>
+<p class="text-sm font-bold text-slate-100">Abandoned Item</p>
+<p class="text-xs text-slate-400">Checkout 2 • Confidence: 88%</p>
+</div>
+</div>
+</div>
+<!-- Live Log Mini-Ticker -->
+<div class="bg-slate-900/50 border border-primary/10 p-4 rounded-xl">
+<h4 class="text-[10px] uppercase font-bold text-slate-500 mb-2 tracking-widest">Live Activity Log</h4>
+<div class="space-y-1.5">
+<div class="flex gap-2 text-[11px]">
+<span class="text-slate-500">14:22:04</span>
+<span class="text-primary font-bold">CAM04</span>
+<span class="text-slate-300">Object tracking started...</span>
+</div>
+<div class="flex gap-2 text-[11px]">
+<span class="text-slate-500">14:21:58</span>
+<span class="text-green-500 font-bold">MAP</span>
+<span class="text-slate-300">Staff #14 moving to Aisle 4</span>
+</div>
+<div class="flex gap-2 text-[11px]">
+<span class="text-slate-500">14:21:55</span>
+<span class="text-red-500 font-bold">AI</span>
+<span class="text-slate-300">Suspicious event flagged</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(19, 127, 236, 0.2);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(19, 127, 236, 0.5);
+        }
+    </style>
+</body></html>

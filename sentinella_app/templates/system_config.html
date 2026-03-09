@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sentinella System Configuration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#257bf4",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .slider-thumb::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #257bf4;
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Navigation -->
+<header class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 px-6 py-4 bg-background-light dark:bg-background-dark sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="p-2 bg-primary rounded-lg text-white">
+<span class="material-symbols-outlined">security</span>
+</div>
+<div>
+<h2 class="text-red-600 text-lg font-bold leading-tight">Sentinella </h2>
+<!-- <p class="text-slate-500 dark:text-slate-400 text-xs">System Terminal v2.4.0</p> -->
+</div>
+</div>
+<div class="flex gap-3">
+<a href="{% url 'notification' %}" class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-slate-700 dark:text-slate-300">notifications</span>
+</a>
+<a href="{% url 'accounts' %}" class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-slate-700 dark:text-slate-300">account_circle</span>
+</a>
+</div>
+</header>
+<div class="flex flex-1 flex-col lg:flex-row">
+<!-- Sidebar Navigation -->
+<aside class="w-full lg:w-64 border-r border-slate-200 dark:border-slate-800 p-4 space-y-2">
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="{% url 'dashboard' %}">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary border border-primary/20 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">System Config</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="{% url 'camera' %}">
+<span class="material-symbols-outlined">videocam</span>
+<span class="text-sm font-medium">Cameras</span>
+</a>
+<!-- <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">cloud_sync</span>
+<span class="text-sm font-medium">Integrations</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="text-sm font-medium">Audit Logs</span>
+</a> -->
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 p-6 lg:p-10 max-w-5xl mx-auto w-full">
+<div class="mb-8">
+<h1 class="text-3xl font-bold text-emerald-600 dark:text-emerald-500 mb-2">Detection Settings</h1>
+<p class="text-slate-500 dark:text-slate-400">Manage AI thresholds, network hardware, and cloud communication parameters.</p>
+</div>
+<div class="space-y-8">
+<!-- Section 1: AI Model Sensitivity -->
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">psychology</span>
+<h2 class="text-lg font-bold">AI Model Sensitivity</h2>
+</div>
+<div class="p-6 space-y-8">
+<!-- YOLO Threshold Slider -->
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="text-sm font-semibold">YOLOv8 Confidence Threshold</label>
+<span class="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-mono font-bold">0.75</span>
+</div>
+<div class="relative w-full h-6 flex items-center">
+<input class="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer slider-thumb" max="1" min="0" step="0.01" type="range" value="0.75"/>
+</div>
+<p class="text-xs text-slate-500">Minimum confidence score required for an object to be flagged as a detection.</p>
+</div>
+<!-- IOU Threshold Slider -->
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="text-sm font-semibold">IOU (Intersection Over Union)</label>
+<span class="bg-primary/20 text-primary px-2 py-1 rounded text-xs font-mono font-bold">0.45</span>
+</div>
+<div class="relative w-full h-6 flex items-center">
+<input class="w-full h-2 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer slider-thumb" max="1" min="0" step="0.01" type="range" value="0.45"/>
+</div>
+<p class="text-xs text-slate-500">Determines when overlapping bounding boxes should be considered a single object.</p>
+</div>
+</div>
+</section>
+<!-- Section 2: Camera & IP Management -->
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">router</span>
+<h2 class="text-lg font-bold">Camera IP Management</h2>
+</div>
+<div class="p-6 space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="text-sm font-medium">Gateway Address</label>
+<input class="w-full bg-slate-100 dark:bg-slate-800 border-transparent rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary focus:outline-none" type="text" value="192.168.1.1"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-medium">Subnet Mask</label>
+<input class="w-full bg-slate-100 dark:bg-slate-800 border-transparent rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary focus:outline-none" type="text" value="255.255.255.0"/>
+</div>
+</div>
+<div class="space-y-3">
+<p class="text-sm font-medium">Auto-Discovery Settings</p>
+<div class="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/50 rounded-lg">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">search</span>
+<div>
+<p class="text-sm font-semibold">ONVIF Discovery</p>
+<p class="text-xs text-slate-500">Automatically find new cameras on the local network</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Integrations & Cloud -->
+<section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">hub</span>
+<h2 class="text-lg font-bold">ERP &amp; Cloud Integration</h2>
+</div>
+<div class="p-6 space-y-6">
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-blue-500">cloud</span>
+</div>
+<div>
+<p class="text-sm font-semibold">SAP / ERP Sync</p>
+<p class="text-xs text-slate-500">Forward events to enterprise resource planning system</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-green-500">mail</span>
+</div>
+<div>
+<p class="text-sm font-semibold">Webhooks &amp; SMTP</p>
+<p class="text-xs text-slate-500">Real-time alerts via external endpoints</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-300 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+<div class="pt-4 space-y-2">
+<label class="text-sm font-medium">API Endpoint URL</label>
+<div class="flex gap-2">
+<input class="flex-1 bg-slate-100 dark:bg-slate-800 border-transparent rounded-lg px-4 py-2 text-sm font-mono text-slate-600 dark:text-slate-400" type="text" value="https://api.sentinella.cloud/v1/ingest"/>
+<button class="bg-[#bc6ee6] text-white px-4 py-2 rounded-lg font-bold text-sm">Test Connection</button> 
+</div>
+</div>
+</section>
+<!-- Footer Actions -->
+<div class="flex items-center justify-end gap-4 pb-12">
+<button class="px-6 py-2.5 rounded-lg font-bold text-sm text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Discard Changes</button>
+<button class="px-8 py-2.5 rounded-lg bg-[#bc6ee6] text-white font-bold text-sm shadow-lg shadow-[#bc6ee6]/20 hover:brightness-110 transition-all">Save System Configuration</button>
+</div>
+</main>
+</div>
+</div>
+</body></html>

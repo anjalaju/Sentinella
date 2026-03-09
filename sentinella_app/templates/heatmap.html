@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sentinella | Analytics &amp; Heatmaps</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2547f4",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#101322",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .heatmap-gradient {
+            background: radial-gradient(circle, rgba(37, 71, 244, 0.4) 0%, rgba(37, 71, 244, 0) 70%);
+        }
+        .risk-high {
+            background: radial-gradient(circle, rgba(239, 68, 68, 0.5) 0%, rgba(239, 68, 68, 0) 70%);
+        }
+        .risk-medium {
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.4) 0%, rgba(245, 158, 11, 0) 70%);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark flex flex-col">
+<div class="p-6">
+<div class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined text-3xl font-bold">shield_with_heart</span>
+<h1 class="text-xl font-bold tracking-tight text-red-600">Sentinella</h1>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 uppercase tracking-widest font-semibold">Supermarket Edition</p>
+</div>
+<nav class="flex-1 px-4 space-y-2 mt-4">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all" href="{% url 'dashboard' %}">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all" href="{% url 'live_monitor' %}">
+<span class="material-symbols-outlined">videocam</span>
+<span class="font-medium">Live Feed</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary/10 text-primary border border-primary/20 rounded-lg transition-all" href="{% url 'heatmap' %}">
+<span class="material-symbols-outlined">map</span>
+<span class="font-medium">Heatmaps</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all" href="{% url 'incidents' %}">
+<span class="material-symbols-outlined">history</span>
+<span class="font-medium">Incident Logs</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all" href="{% url 'settings' %}">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-medium">Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3 p-2 bg-slate-50 dark:bg-slate-900 rounded-xl">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<p class="text-sm font-bold">Admin Store #42</p>
+<p class="text-xs text-slate-500">Security Lead</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-8">
+<!-- Top Navbar Section -->
+<header class="flex items-center justify-between mb-8">
+<div>
+<h2 class="text-3xl font-black text-green-600 dark:text-green-400 tracking-tight">Store Floor Plan Analytics</h2>
+<p class="text-green-700 dark:text-green-500">Visualizing real-time theft risk and customer behavior patterns.</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex bg-slate-200 dark:bg-slate-800 p-1 rounded-lg">
+<button class="px-4 py-1.5 text-sm font-medium bg-white dark:bg-slate-700 shadow-sm rounded-md">Last 24h</button>
+<button class="px-4 py-1.5 text-sm font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">Last 7d</button>
+<button class="px-4 py-1.5 text-sm font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">Last 30d</button>
+</div>
+<button class="bg-[rgb(188,110,230)] text-white px-6 py-2.5 rounded-lg font-bold flex items-center gap-2 hover:bg-[rgb(188,110,230)]/90 transition-all">
+    <span class="material-symbols-outlined text-lg">download</span>
+    Export Intelligence Report
+</button>
+</div>
+</header>
+<!-- Main Dashboard Grid -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Large Floor Plan Heatmap Section -->
+<div class="col-span-12 xl:col-span-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+<h3 class="text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">location_on</span>
+                            Live Store Heatmap: Theft Hotspots
+                        </h3>
+<div class="flex items-center gap-4 text-xs font-medium uppercase tracking-wider text-slate-500">
+<span class="flex items-center gap-1"><i class="size-2 rounded-full bg-red-500"></i> High Risk</span>
+<span class="flex items-center gap-1"><i class="size-2 rounded-full bg-amber-500"></i> Medium Risk</span>
+<span class="flex items-center gap-1"><i class="size-2 rounded-full bg-blue-500"></i> High Traffic</span>
+</div>
+</div>
+<div class="relative bg-slate-100 dark:bg-slate-950 h-[500px] w-full p-8 flex items-center justify-center">
+<!-- Simulated Floor Plan Layout -->
+<div class="w-full h-full relative border-2 border-slate-300 dark:border-slate-800 rounded-lg flex flex-wrap p-4 gap-4 overflow-hidden">
+<!-- Background texture for floor plan -->
+<div class="absolute inset-0 opacity-5 pointer-events-none" data-alt="Technical blueprint grid pattern background" style="background-image: radial-gradient(circle, #fff 1px, transparent 1px); background-size: 20px 20px;"></div>
+<!-- Shelving Units & Hotspots -->
+<div class="w-1/4 h-3/4 border-2 border-slate-300 dark:border-slate-800 bg-slate-200 dark:bg-slate-900/50 rounded flex items-center justify-center relative">
+<span class="text-xs uppercase font-bold text-slate-400 rotate-90">Beverage Aisle</span>
+<div class="absolute top-10 left-4 size-32 risk-high rounded-full animate-pulse"></div>
+</div>
+<div class="w-1/4 h-3/4 flex flex-col gap-4">
+<div class="h-1/2 border-2 border-slate-300 dark:border-slate-800 bg-slate-200 dark:bg-slate-900/50 rounded flex items-center justify-center relative overflow-hidden">
+<span class="text-xs uppercase font-bold text-slate-400">Electronics</span>
+<div class="absolute inset-0 risk-high opacity-80"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-red-500">
+<span class="material-symbols-outlined text-4xl">warning</span>
+</div>
+</div>
+<div class="h-1/2 border-2 border-slate-300 dark:border-slate-800 bg-slate-200 dark:bg-slate-900/50 rounded flex items-center justify-center">
+<span class="text-xs uppercase font-bold text-slate-400">Personal Care</span>
+</div>
+</div>
+<div class="w-1/4 h-3/4 flex flex-col gap-4">
+<div class="h-1/3 border-2 border-slate-300 dark:border-slate-800 bg-slate-200 dark:bg-slate-900/50 rounded flex items-center justify-center">
+<span class="text-xs uppercase font-bold text-slate-400">Snacks</span>
+</div>
+<div class="h-1/3 border-2 border-slate-300 dark:border-slate-800 bg-slate-200 dark:bg-slate-900/50 rounded flex items-center justify-center relative">
+<span class="text-xs uppercase font-bold text-slate-400">Pharmacy</span>
+<div class="absolute bottom-4 right-4 size-24 risk-medium rounded-full"></div>
+</div>
+<div class="h-1/3 border-2 border-slate-300 dark:border-slate-800 bg-slate-200 dark:bg-slate-900/50 rounded flex items-center justify-center">
+<span class="text-xs uppercase font-bold text-slate-400">Frozen</span>
+</div>
+</div>
+<div class="flex-1 h-3/4 flex flex-col gap-4">
+<div class="h-full border-2 border-slate-300 dark:border-slate-800 bg-slate-200 dark:bg-slate-900/50 rounded flex items-center justify-center relative overflow-hidden">
+<span class="text-xs uppercase font-bold text-slate-400">Self-Checkout</span>
+<div class="absolute inset-0 heatmap-gradient"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-slate-50 dark:bg-slate-950/50 flex items-center gap-6">
+<div class="flex -space-x-2">
+<div class="size-8 rounded-full border-2 border-white dark:border-slate-900 bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-xs">person</span>
+</div>
+<div class="size-8 rounded-full border-2 border-white dark:border-slate-900 bg-primary/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-xs">person</span>
+</div>
+<div class="size-8 rounded-full border-2 border-white dark:border-slate-900 bg-primary flex items-center justify-center text-white">
+<span class="text-[10px] font-bold">+12</span>
+</div>
+</div>
+<p class="text-sm text-slate-500"><span class="font-bold text-primary">14 security personnel</span> currently monitoring mapped zones.</p>
+</div>
+</div>
+<!-- Right Sidebar: High Risk Zones Table -->
+<div class="col-span-12 xl:col-span-4 flex flex-col gap-6">
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm">
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-red-500">priority_high</span>
+                            High-Risk Alert Zones
+                        </h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 rounded-lg bg-red-500/10 border border-red-500/20">
+<div>
+<p class="font-bold text-sm">Aisle 4: Electronics</p>
+<p class="text-xs text-slate-500">4 potential concealment alerts (10m)</p>
+</div>
+<span class="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded">CRITICAL</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
+<div>
+<p class="font-bold text-sm">Aisle 12: Spirits/Wine</p>
+<p class="text-xs text-slate-500">Extended loitering detected</p>
+</div>
+<span class="bg-amber-500 text-white text-[10px] font-bold px-2 py-1 rounded">WARNING</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+<div>
+<p class="font-bold text-sm">Pharmacy Wall</p>
+<p class="text-xs text-slate-500">Unusual pattern: Fast exit</p>
+</div>
+<span class="bg-slate-500 text-white text-[10px] font-bold px-2 py-1 rounded">MONITOR</span>
+</div>
+</div>
+<button class="w-full mt-6 py-2 text-primary font-bold text-sm hover:underline">View All Active Alerts →</button>
+</div>
+<!-- Behavior Analytics Mini-Chart Area -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm flex-1">
+<h3 class="text-lg font-bold mb-4">Risk Behavior Mix</h3>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between text-xs font-bold mb-2 uppercase tracking-wide">
+<span>Concealment Patterns</span>
+<span class="text-primary">68%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[68%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs font-bold mb-2 uppercase tracking-wide">
+<span>Suspicious Loitering</span>
+<span class="text-amber-500">22%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="bg-amber-500 h-full w-[22%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs font-bold mb-2 uppercase tracking-wide">
+<span>Tag Tampering Detection</span>
+<span class="text-red-500">10%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="bg-red-500 h-full w-[10%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Row: Historical Trend Charts & Stats -->
+<div class="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<!-- Trend Card 1 -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm">
+<div class="flex items-center gap-4 mb-4">
+<div class="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+<div>
+<p class="text-xs text-slate-500 font-bold uppercase">Total Incidents</p>
+<p class="text-2xl font-black">124 <span class="text-sm font-normal text-red-500">+12%</span></p>
+</div>
+</div>
+<!-- Mini Chart Visual -->
+<div class="h-16 flex items-end gap-1">
+<div class="flex-1 bg-primary/20 h-1/2 rounded-t"></div>
+<div class="flex-1 bg-primary/20 h-2/3 rounded-t"></div>
+<div class="flex-1 bg-primary/20 h-1/2 rounded-t"></div>
+<div class="flex-1 bg-primary/20 h-3/4 rounded-t"></div>
+<div class="flex-1 bg-primary/20 h-1/2 rounded-t"></div>
+<div class="flex-1 bg-primary/20 h-2/3 rounded-t"></div>
+<div class="flex-1 bg-primary/20 h-full rounded-t"></div>
+</div>
+</div>
+<!-- Trend Card 2 -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm">
+<div class="flex items-center gap-4 mb-4">
+<div class="size-12 rounded-lg bg-green-500/10 flex items-center justify-center text-green-500">
+<span class="material-symbols-outlined">verified_user</span>
+</div>
+<div>
+<p class="text-xs text-slate-500 font-bold uppercase">Apprehension Rate</p>
+<p class="text-2xl font-black">94.2% <span class="text-sm font-normal text-green-500">+3.1%</span></p>
+</div>
+</div>
+<!-- Mini Chart Visual -->
+<div class="h-16 flex items-end gap-1">
+<div class="flex-1 bg-green-500/20 h-3/4 rounded-t"></div>
+<div class="flex-1 bg-green-500/20 h-2/3 rounded-t"></div>
+<div class="flex-1 bg-green-500/20 h-3/4 rounded-t"></div>
+<div class="flex-1 bg-green-500/20 h-1/2 rounded-t"></div>
+<div class="flex-1 bg-green-500/20 h-3/4 rounded-t"></div>
+<div class="flex-1 bg-green-500/20 h-2/3 rounded-t"></div>
+<div class="flex-1 bg-green-500/20 h-full rounded-t"></div>
+</div>
+</div>
+<!-- Trend Card 3 -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm">
+<div class="flex items-center gap-4 mb-4">
+<div class="size-12 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500">
+<span class="material-symbols-outlined">timer</span>
+</div>
+<div>
+<p class="text-xs text-slate-500 font-bold uppercase">Avg Response Time</p>
+<p class="text-2xl font-black">42s <span class="text-sm font-normal text-green-500">-15%</span></p>
+</div>
+</div>
+<!-- Mini Chart Visual -->
+<div class="h-16 flex items-end gap-1">
+<div class="flex-1 bg-amber-500/20 h-full rounded-t"></div>
+<div class="flex-1 bg-amber-500/20 h-3/4 rounded-t"></div>
+<div class="flex-1 bg-amber-500/20 h-1/2 rounded-t"></div>
+<div class="flex-1 bg-amber-500/20 h-2/3 rounded-t"></div>
+<div class="flex-1 bg-amber-500/20 h-1/2 rounded-t"></div>
+<div class="flex-1 bg-amber-500/20 h-1/3 rounded-t"></div>
+<div class="flex-1 bg-amber-500/20 h-1/4 rounded-t"></div>
+</div>
+</div>
+</div>
+<!-- Detailed Zone Analytics Table -->
+<div class="col-span-12 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800">
+<h3 class="text-lg font-bold">Zone Intelligence Details</h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-slate-50 dark:bg-slate-950 text-xs font-bold uppercase tracking-wider text-slate-500">
+<tr>
+<th class="px-6 py-4">Zone Name</th>
+<th class="px-6 py-4">Risk Level</th>
+<th class="px-6 py-4">Primary Incident Type</th>
+<th class="px-6 py-4">Total Alerts (24h)</th>
+<th class="px-6 py-4">Foot Traffic Density</th>
+<th class="px-6 py-4">Security Presence</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 font-bold">Zone A: Electronics</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400">
+                                            Critical
+                                        </span>
+</td>
+<td class="px-6 py-4 text-sm">Concealment</td>
+<td class="px-6 py-4 text-sm font-medium">48 Alerts</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="flex-1 bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full max-w-[100px]">
+<div class="bg-primary h-full w-[85%]"></div>
+</div>
+<span class="text-xs font-bold">85%</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">3 Stationary / 2 Mobile</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 font-bold">Zone D: Health &amp; Beauty</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">
+                                            High
+                                        </span>
+</td>
+<td class="px-6 py-4 text-sm">Tag Tampering</td>
+<td class="px-6 py-4 text-sm font-medium">32 Alerts</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="flex-1 bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full max-w-[100px]">
+<div class="bg-primary h-full w-[60%]"></div>
+</div>
+<span class="text-xs font-bold">60%</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">1 Stationary / 1 Mobile</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 font-bold">Zone B: Spirits &amp; Wine</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400">
+                                            Medium
+                                        </span>
+</td>
+<td class="px-6 py-4 text-sm">Loitering</td>
+<td class="px-6 py-4 text-sm font-medium">18 Alerts</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="flex-1 bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full max-w-[100px]">
+<div class="bg-primary h-full w-[35%]"></div>
+</div>
+<span class="text-xs font-bold">35%</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">0 Stationary / 2 Mobile</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
+
+
+
+
+

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Camera &amp; AI Configuration - GuardEye AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Space Grotesk', sans-serif; }
+        .detection-zone { border: 2px dashed #137fec; background: rgba(19, 127, 236, 0.2); }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-slate-200 dark:border-slate-800 px-10 py-3 bg-white dark:bg-background-dark sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary">
+<span class="material-symbols-outlined text-3xl">visibility</span>
+<h2 class="text-red-500 text-lg font-bold leading-tight tracking-tight">Sentinella</h2>
+</div>
+<nav class="flex items-center gap-9">
+<a class="text-slate-600 dark:text-slate-400 hover:text-red-500 dark:hover:text-red-500 text-sm font-medium transition-colors" href="{% url 'dashboard' %}">Dashboard</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-red-500 dark:hover:text-red-500 text-sm font-medium transition-colors" href="{% url 'live_monitor' %}">Live Monitor</a>
+<a class="text-primary text-sm font-bold border-b-2 border-primary pb-1" href="#">Cameras</a>   
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'incidents' %}">Incident Log</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'floor_map' %}">Floor Maps</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'staff_portal' %}">Staff Portal</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'settings' %}">Settings</a> 
+
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+<input class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary outline-none" placeholder="Search cameras..." type="text"/>
+</div>
+<div class="flex gap-3">
+<a href="{% url 'notification' %}" class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</a>
+<a href="{% url 'accounts' %}" class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</a>
+</div>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-72 border-r border-slate-200 dark:border-slate-800 p-6 flex flex-col gap-8 bg-white dark:bg-background-dark/50 overflow-y-auto">
+<div>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xs font-bold uppercase tracking-wider text-slate-500">System Health</h3>
+<span class="flex h-2 w-2 rounded-full bg-emerald-500"></span>
+</div>
+<div class="space-y-2">
+<div class="flex items-center gap-3 p-3 rounded-lg bg-primary/10 border border-primary/20">
+<span class="material-symbols-outlined text-primary">hard_drive</span>
+<div class="flex flex-col">
+<span class="text-sm font-medium">NVR Storage</span>
+<span class="text-xs text-slate-500">82% Capacity - Healthy</span>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-slate-400">memory</span>
+<div class="flex flex-col">
+<span class="text-sm font-medium">AI Processor</span>
+<span class="text-xs text-slate-500">42°C - Optimal Load</span>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-slate-400">update</span>
+<div class="flex flex-col">
+<span class="text-sm font-medium">Firmware</span>
+<span class="text-xs text-slate-500">v2.4.1 - Update Ready</span>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4">Quick Tools</h3>
+<div class="grid grid-cols-2 gap-2">
+<button class="flex flex-col items-center justify-center p-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white transition-all group">
+<span class="material-symbols-outlined mb-1">add_location_alt</span>
+<span class="text-[10px] font-bold">New Zone</span>
+</button>
+<button class="flex flex-col items-center justify-center p-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined mb-1">history</span>
+<span class="text-[10px] font-bold">Logs</span>
+</button>
+</div>
+</div>
+<div class="mt-auto">
+<button style="background-color: rgb(188, 110, 230) !important; color: black !important;" class="w-full bg-[lavender] hover:bg-[#c0c0e0] text-black font-bold py-3 rounded-lg flex items-center justify-center gap-2 transition-transform active:scale-95 shadow-lg shadow-[lavender]/20">
+<span class="material-symbols-outlined text-xl">system_update_alt</span>
+<span>Update System</span>
+</button>
+</div>
+</aside>
+<!-- Main Content -->
+<section class="flex-1 p-8 overflow-y-auto bg-slate-50 dark:bg-background-dark">
+<div class="max-w-6xl mx-auto">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h1 class="text-3xl font-black tracking-tight text-green-500">Camera &amp; AI Configuration</h1>
+<p class="text-slate-500 mt-1">Configure active theft detection zones and AI sensitivity thresholds.</p>
+</div>
+<div class="flex bg-slate-200 dark:bg-slate-800 p-1 rounded-lg">
+<button class="px-4 py-1.5 rounded-md bg-white dark:bg-slate-700 shadow-sm text-sm font-bold">Grid</button>
+<button class="px-4 py-1.5 rounded-md text-slate-500 dark:text-slate-400 text-sm font-bold hover:text-slate-700 dark:hover:text-slate-200">Editor</button>
+</div>
+</div>
+<!-- Active Configuration Canvas -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 space-y-6">
+<div class="relative group rounded-xl overflow-hidden shadow-2xl border-4 border-primary">
+<div class="absolute top-4 left-4 z-10 bg-primary text-white text-[10px] font-black uppercase px-2 py-1 rounded">Live Feed - Aisle 4 (Liquor)</div>
+<div class="absolute top-4 right-4 z-10 flex gap-2">
+<div class="bg-black/60 backdrop-blur-md text-white text-[10px] px-2 py-1 rounded border border-white/20 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">videocam</span> 4K UHD
+                                    </div>
+<div class="bg-black/60 backdrop-blur-md text-white text-[10px] px-2 py-1 rounded border border-white/20 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-red-500">record_voice_over</span> AI Active
+                                    </div>
+</div>
+<!-- Video Area with Overlay -->
+<div class="aspect-video bg-slate-900 relative">
+<div class="absolute inset-0 opacity-40 mix-blend-overlay bg-gradient-to-t from-black to-transparent"></div>
+<img alt="Supermarket liquor aisle security camera view" class="w-full h-full object-cover" data-alt="Security camera view of a supermarket aisle with liquor bottles" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMl15PD_G4LSbLp8teVwuL1GQkrkcmHX_ZzgewK74tnIvUBLogwF-p5jukBLSs5-E9VbVq3Kv0PM0e2kem3rnBTWrObLZk16zDR7iV9cc7HQ-HlkbCoKVZq_9zFiXdPZkVFliS1iLNRzT-g15T-XyntWEtELKhFu6xQijGKoNzALKj9du4ovw4cPq70LvQGRR8FmzO7Kf-BWQ7VV9oFf9k3qxjbVS5OdqDBbyGpHMPpXf9NtnzVaq9DZTHny57iCA2huu4kR1snxlN"/>
+<!-- Drawing Overlays -->
+<div class="absolute inset-0">
+<!-- Zone 1: High Value Shelf -->
+<div class="absolute top-[20%] left-[30%] w-[40%] h-[30%] detection-zone group/zone">
+<div class="absolute -top-7 left-0 bg-primary text-[10px] font-bold px-2 py-1 rounded shadow-lg text-white">Zone Alpha: High Value Spirits</div>
+<div class="absolute top-0 right-0 p-1 opacity-0 group-hover/zone:opacity-100 transition-opacity">
+<button class="bg-red-500 text-white rounded p-0.5"><span class="material-symbols-outlined text-xs">close</span></button>
+</div>
+</div>
+<!-- AI Detection Marker -->
+<div class="absolute top-[55%] left-[45%] border-2 border-red-500 w-16 h-40 animate-pulse">
+<div class="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-red-500 text-white text-[8px] font-black px-1 rounded whitespace-nowrap">PERSON: 98% CONFIDENCE</div>
+</div>
+</div>
+</div>
+<div class="bg-slate-900 p-4 flex items-center justify-between border-t border-slate-800">
+<div class="flex gap-4">
+<button class="text-white/70 hover:text-white"><span class="material-symbols-outlined">play_arrow</span></button>
+<button class="text-white/70 hover:text-white"><span class="material-symbols-outlined">pause</span></button>
+<button class="text-white/70 hover:text-white"><span class="material-symbols-outlined">screenshot</span></button>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-[10px] text-slate-400 font-mono uppercase tracking-widest">FPS: 60.2 | Latency: 12ms</span>
+<button class="text-primary hover:text-primary/80 flex items-center gap-1 text-xs font-bold">
+<span class="material-symbols-outlined text-sm">fullscreen</span> FULLSCREEN
+                                        </button>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+<div class="bg-white dark:bg-background-dark/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 group hover:border-primary transition-colors cursor-pointer">
+<div class="aspect-video rounded bg-slate-200 dark:bg-slate-800 mb-2 overflow-hidden relative">
+<img alt="Electronics department camera feed" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="Security feed from electronics department" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_cVy4DzDtjPYFAtsCKgiadtfWJAS43_C6rzEDDkiPORGiLdL0djMtRZa9CIhkKvSY3jknL4IZ6Tm7CAb4qp9c5k_ziFNc_ah02t2Fls00fxWqdgcQw2moXzd7qjLPMkjQnGb-8UtUkX82qKu-wKZch3FE28-CqEycpNVNqIj69jFG3R-GjVjmP_FJ4tWkN5NuPleRa2njK7EeZaA6vO66w6h24ogKL8T6JSsZzJBrdRAU-LiZvR81Qyrzc8t1dNoHvybWARGjytxq"/>
+<div class="absolute bottom-1 left-1 bg-black/50 px-1 rounded text-[8px] text-white">AISLE 1</div>
+</div>
+<p class="text-xs font-bold truncate">Aisle 1 - Electronics</p>
+</div>
+<div class="bg-white dark:bg-background-dark/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 group hover:border-primary transition-colors cursor-pointer">
+<div class="aspect-video rounded bg-slate-200 dark:bg-slate-800 mb-2 overflow-hidden relative">
+<img alt="Main entrance security camera feed" class="w-full h-full object-cover" data-alt="Security feed from supermarket main entrance" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqUxzCIw1Qh95zMP_h6GHsxdQIEflC9Rc9c__PVjFVGlqb9T1GRubzY-jd6ABYQ-zi-9nF6v5cz99tjMcCTELBZ0EbP8wZCIuaRjHVfUSd8DxawJ1I6UaEoUdCKrvdLgA6URDBLdbDTfaBIEj9ksi6Qt_BJmWEXyoLFqv8aYW1yVepbFOzb_EqCantg-bIEM23evvqEkunFY2b75UF4SpDOKOasFsGCy42E9BrjuMMQkQEKSoR5d0kGNV7xawbu9x86DvA3i9G9T1a"/>
+<div class="absolute bottom-1 left-1 bg-primary px-1 rounded text-[8px] text-white">ACTIVE</div>
+</div>
+<p class="text-xs font-bold truncate">Aisle 4 - Liquor</p>
+</div>
+<div class="bg-white dark:bg-background-dark/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 group hover:border-primary transition-colors cursor-pointer">
+<div class="aspect-video rounded bg-slate-200 dark:bg-slate-800 mb-2 overflow-hidden relative">
+<img alt="Self-checkout area camera feed" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="Security feed from self-checkout counters" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyEiN3RzrfkkkdO2MoMnnNEeeHMxluBEiRCV7KFDgQwC2zGcm-9oknFkcl_rcb95WXVIkq9E4FF_VZFldFYHwr1s2PWRuBJy0k7JFlsQ1fRjQ34BLbnCXRqpWk5tJYk-wzo_ZrvQoiMZ8QJ2oHf1nG_LxppM6yhFZXhDe3kBhMSPtlw6M9ryU7ab0h80NztPqJ214bhjm-CPCU1IMRLYNMJHvviOjg4CuR_kQJsU6omnbix3rCY42a4w6oA_ktXG5L8mVRCW0dD6LF"/>
+<div class="absolute bottom-1 left-1 bg-black/50 px-1 rounded text-[8px] text-white">FRONT</div>
+</div>
+<p class="text-xs font-bold truncate">Self-Checkout 1</p>
+</div>
+</div>
+</div>
+<!-- Controls Panel -->
+<div class="space-y-6">
+<div class="bg-white dark:bg-background-dark/80 rounded-xl border border-slate-200 dark:border-slate-800 p-6">
+<h2 class="text-sm font-black uppercase tracking-widest text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">settings_input_component</span>
+                                    AI Parameters
+                                </h2>
+<div class="space-y-8">
+<div>
+<div class="flex justify-between items-center mb-4">
+<label class="text-sm font-bold text-slate-700 dark:text-slate-300">Object Persistence</label>
+<span class="text-xs font-mono bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-primary">2.4s</span>
+</div>
+<input class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary" type="range"/>
+<p class="text-[10px] text-slate-500 mt-2">Time object must remain in zone before triggering alert.</p>
+</div>
+<div>
+<div class="flex justify-between items-center mb-4">
+<label class="text-sm font-bold text-slate-700 dark:text-slate-300">Sensitivity Threshold</label>
+<span class="text-xs font-mono bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-primary">85%</span>
+</div>
+<input class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary" type="range"/>
+<p class="text-[10px] text-slate-500 mt-2">Probability confidence required for 'Theft Behavior' classification.</p>
+</div>
+<div>
+<div class="flex justify-between items-center mb-4">
+<label class="text-sm font-bold text-slate-700 dark:text-slate-300">Alert Priority</label>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<button class="px-2 py-2 rounded border border-slate-200 dark:border-slate-800 text-[10px] font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">LOW</button>
+<button class="px-2 py-2 rounded bg-primary/20 border border-primary text-[10px] font-bold text-primary">MED</button>
+<button class="px-2 py-2 rounded border border-slate-200 dark:border-slate-800 text-[10px] font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">CRIT</button>
+</div>
+</div>
+<div class="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-3">
+<label class="flex items-center justify-between cursor-pointer group">
+<span class="text-sm font-medium text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">Push Notifications</span>
+<div class="relative inline-flex items-center">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 dark:bg-slate-800 rounded-full peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</label>
+<label class="flex items-center justify-between cursor-pointer group">
+<span class="text-sm font-medium text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">Record Incident Clips</span>
+<div class="relative inline-flex items-center">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 dark:bg-slate-800 rounded-full peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</label>
+</div>
+</div>
+</div>
+<div class="bg-primary/5 rounded-xl border border-primary/20 p-6 flex items-start gap-4">
+<span class="material-symbols-outlined text-primary">info</span>
+<div>
+<h4 class="text-sm font-bold text-primary">Active Learning</h4>
+<p class="text-xs text-slate-500 mt-1 leading-relaxed">The AI model is currently optimizing for current lighting conditions. Accuracy may fluctuate slightly for the next 45 minutes.</p>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex-1 py-3 px-4 rounded-lg border border-slate-300 dark:border-slate-700 font-bold text-sm hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Discard</button>
+<button style="background-color: rgb(188, 110, 230) !important;" class="flex-[2] py-3 px-4 rounded-lg bg-primary text-white font-bold text-sm shadow-xl shadow-primary/20 hover:brightness-110 active:scale-[0.98] transition-all">Save Configuration</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+</body></html>

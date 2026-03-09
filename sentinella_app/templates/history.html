@@ -1,0 +1,257 @@
+{% load static %}
+<!doctype html>
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Sentinella - History</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#8b5cf6",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+              "surface-dark": "#16222e",
+              "border-dark": "#233648",
+            },
+            fontFamily: {
+              display: ["Space Grotesk", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+      <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-background-light dark:bg-background-dark px-6 lg:px-10 py-3 sticky top-0 z-50">
+        <div class="flex items-center gap-8">
+        <div class="flex items-center gap-3 text-primary">
+        <span class="material-symbols-outlined text-3xl">shield_person</span>
+        <h2 class="text-red-500 text-lg font-bold leading-tight tracking-[-0.015em]">Sentinella</h2>
+        </div>
+        <label class="hidden md:flex flex-col min-w-40 h-10 w-64">
+        <div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+        <div class="text-slate-500 dark:text-slate-400 flex border-none bg-slate-100 dark:bg-slate-800 items-center justify-center pl-4 rounded-l-lg border-r-0">
+        <span class="material-symbols-outlined text-xl">search</span>
+        </div>
+        <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-900 dark:text-slate-100 focus:outline-0 focus:ring-1 focus:ring-primary border-none bg-slate-100 dark:bg-slate-800 placeholder:text-slate-500 px-4 rounded-l-none border-l-0 pl-2 text-base font-normal" placeholder="Search incidents, staff, or cameras..." value=""/>
+        </div>
+        </label>
+        </div>
+        <div class="flex flex-1 justify-end gap-6 items-center">
+        <nav class="hidden lg:flex items-center gap-8">
+        <a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'dashboard' %}">Dashboard</a>
+        <a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'incidents' %}">Incident Log</a>
+        <a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'floor_map' %}">Floor Maps</a>
+        <a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'staff_portal' %}">Staff Portal</a>
+        <a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'settings' %}">Settings</a> 
+        <a class="text-primary text-sm font-semibold leading-normal" href="{% url 'history' %}">History</a>
+        </nav>
+        <div class="flex gap-2">
+        <a href="{% url 'notification' %}" class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-purple-500 transition-colors">
+        <span class="material-symbols-outlined text-xl">notifications</span>
+        </a>
+        <a href="{% url 'accounts' %}" class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-purple-500 transition-colors">
+        <span class="material-symbols-outlined text-xl">account_circle</span>
+        </a>
+        </div>
+        </div>
+        </header>
+      
+      <!-- Main Content -->
+      <main class="flex-1 px-6 md:px-10 py-12 max-w-7xl mx-auto w-full">
+        <!-- Header -->
+        <div class="mb-10">
+          <h1 class="text-orange-500 text-3xl md:text-4xl font-bold tracking-tight mb-2">Theft Activity History</h1>
+          <p class="text-slate-400">Review past, ongoing, and suspected incidents reported by the Sentinella system.</p>
+        </div>
+
+        <!-- Filters (Mock) -->
+        <div class="flex flex-wrap gap-4 mb-8">
+          <div class="flex items-center gap-2 bg-surface-dark border border-border-dark rounded-lg px-4 py-2">
+            <span class="material-symbols-outlined text-slate-400 text-sm">filter_list</span>
+            <select class="bg-transparent border-none text-sm text-slate-300 focus:ring-0 cursor-pointer outline-none">
+              <option>All Statuses</option>
+              <option>Ongoing</option>
+              <option>Continued</option>
+              <option>Done</option>
+            </select>
+          </div>
+          <div class="flex items-center gap-2 bg-surface-dark border border-border-dark rounded-lg px-4 py-2">
+            <span class="material-symbols-outlined text-slate-400 text-sm">calendar_today</span>
+            <input type="date" class="bg-transparent border-none text-sm text-slate-300 focus:ring-0 cursor-pointer outline-none" value="2023-10-27" />
+          </div>
+        </div>
+
+        <!-- History Board -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- Column 1: Ongoing -->
+          <div class="flex flex-col gap-4">
+            <div class="flex items-center justify-between border-b border-border-dark pb-3 mb-2">
+              <h2 class="text-orange-400 font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined animate-pulse">radio_button_checked</span>
+                Ongoing
+              </h2>
+              <span class="bg-surface-dark text-slate-400 text-xs py-1 px-2 rounded-full border border-border-dark">2</span>
+            </div>
+            
+            <!-- Card -->
+            <div class="bg-surface-dark border border-orange-500/30 rounded-xl p-5 shadow-lg relative group">
+              <div class="absolute top-0 right-0 p-4">
+                <span class="text-xs font-bold px-2 py-1 bg-orange-500/20 text-orange-400 rounded">Suspected</span>
+              </div>
+              <div class="mb-4">
+                <p class="text-slate-500 text-xs mb-1">Aisle 4 - Electronics</p>
+                <h3 class="text-slate-100 font-medium">Concealment Attempt</h3>
+                <p class="text-slate-400 text-sm mt-2">Subject loitering near high-value goods, unusual movement patterns detected.</p>
+              </div>
+              <div class="flex items-center gap-3 pt-3 border-t border-border-dark">
+                <div class="size-8 rounded bg-background-dark flex items-center justify-center border border-border-dark">
+                  <span class="material-symbols-outlined text-sm text-slate-400">videocam</span>
+                </div>
+                <div class="flex-1">
+                  <p class="text-xs text-slate-500">Camera CAM-04</p>
+                  <p class="text-xs font-medium text-slate-300">14:02 PM • Confidence: 87%</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card -->
+            <div class="bg-surface-dark border border-orange-500/30 rounded-xl p-5 shadow-lg relative group">
+              <div class="absolute top-0 right-0 p-4">
+                <span class="text-xs font-bold px-2 py-1 bg-orange-500/20 text-orange-400 rounded">Alert</span>
+              </div>
+              <div class="mb-4">
+                <p class="text-slate-500 text-xs mb-1">Checkout Lane 2</p>
+                <h3 class="text-slate-100 font-medium">Cart Push-out Risk</h3>
+                <p class="text-slate-400 text-sm mt-2">Unscanned items identified in the lower basket area.</p>
+              </div>
+              <div class="flex items-center gap-3 pt-3 border-t border-border-dark">
+                <div class="size-8 rounded bg-background-dark flex items-center justify-center border border-border-dark">
+                  <span class="material-symbols-outlined text-sm text-slate-400">videocam</span>
+                </div>
+                <div class="flex-1">
+                  <p class="text-xs text-slate-500">Camera CAM-12</p>
+                  <p class="text-xs font-medium text-slate-300">14:15 PM • Confidence: 94%</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Continued (Follow-up Needed) -->
+          <div class="flex flex-col gap-4">
+            <div class="flex items-center justify-between border-b border-border-dark pb-3 mb-2">
+              <h2 class="text-blue-400 font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined">pending_actions</span>
+                Continued
+              </h2>
+              <span class="bg-surface-dark text-slate-400 text-xs py-1 px-2 rounded-full border border-border-dark">1</span>
+            </div>
+
+            <!-- Card -->
+            <div class="bg-surface-dark border border-border-dark rounded-xl p-5 shadow-lg relative hover:border-blue-500/30 transition-colors">
+              <div class="absolute top-0 right-0 p-4">
+                <span class="text-xs font-bold px-2 py-1 bg-blue-500/20 text-blue-400 rounded">Review</span>
+              </div>
+              <div class="mb-4">
+                <p class="text-slate-500 text-xs mb-1">Aisle 7 - Cosmetics</p>
+                <h3 class="text-slate-100 font-medium">Ticket Switching</h3>
+                <p class="text-slate-400 text-sm mt-2">Items scanned at lower price point. Staff dispatched, suspect currently under observation.</p>
+              </div>
+              <div class="flex items-center gap-3 pt-3 border-t border-border-dark">
+                <div class="size-8 rounded bg-background-dark flex items-center justify-center border border-border-dark">
+                  <span class="material-symbols-outlined text-sm text-slate-400">person</span>
+                </div>
+                <div class="flex-1">
+                  <p class="text-xs text-slate-500">Assigned to: Guard Miller</p>
+                  <p class="text-xs font-medium text-slate-300">12:30 PM • 1 hr ago</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 3: Done (Resolved/Archived) -->
+          <div class="flex flex-col gap-4">
+            <div class="flex items-center justify-between border-b border-border-dark pb-3 mb-2">
+              <h2 class="text-emerald-400 font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined">task_alt</span>
+                Done
+              </h2>
+              <span class="bg-surface-dark text-slate-400 text-xs py-1 px-2 rounded-full border border-border-dark">3</span>
+            </div>
+
+            <!-- Card -->
+            <div class="bg-surface-dark border border-border-dark rounded-xl p-5 shadow-lg opacity-80 hover:opacity-100 transition-opacity">
+              <div class="absolute top-0 right-0 p-4">
+                <span class="text-xs font-bold px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded">Resolved</span>
+              </div>
+              <div class="mb-4">
+                <p class="text-slate-500 text-xs mb-1">Self-Checkout 1</p>
+                <h3 class="text-slate-100 font-medium">Missed Scan</h3>
+                <p class="text-slate-400 text-sm mt-2">Item detected traversing scan area without barcode read. Staff intervened and corrected.</p>
+              </div>
+              <div class="flex items-center gap-3 pt-3 border-t border-border-dark">
+                <div class="size-8 rounded bg-background-dark flex items-center justify-center border border-border-dark">
+                  <span class="material-symbols-outlined text-sm text-slate-400">check_circle</span>
+                </div>
+                <div class="flex-1">
+                  <p class="text-xs text-slate-500">Outcome: Recovered $45.00</p>
+                  <p class="text-xs font-medium text-slate-300">09:15 AM</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card -->
+            <div class="bg-surface-dark border border-border-dark rounded-xl p-5 shadow-lg opacity-80 hover:opacity-100 transition-opacity">
+              <div class="absolute top-0 right-0 p-4">
+                <span class="text-xs font-bold px-2 py-1 bg-red-500/20 text-red-400 rounded">Escalated</span>
+              </div>
+              <div class="mb-4">
+                <p class="text-slate-500 text-xs mb-1">Exit C</p>
+                <h3 class="text-slate-100 font-medium">Direct Walk-out</h3>
+                <p class="text-slate-400 text-sm mt-2">Subject exited with full cart avoiding checkout points. Footage exported for local authorities.</p>
+              </div>
+              <div class="flex items-center gap-3 pt-3 border-t border-border-dark">
+                <div class="size-8 rounded bg-background-dark flex items-center justify-center border border-border-dark">
+                  <span class="material-symbols-outlined text-sm text-slate-400">gavel</span>
+                </div>
+                <div class="flex-1">
+                  <p class="text-xs text-slate-500">Outcome: Loss Recorded</p>
+                  <p class="text-xs font-medium text-slate-300">08:42 AM</p>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="bg-background-dark border-t border-border-dark py-8 px-6 md:px-10 mt-12">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-center items-center gap-4">
+          <p class="text-slate-500 text-xs">© 2024 Sentinella. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

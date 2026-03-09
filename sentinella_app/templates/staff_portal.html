@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#257bf4",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Sentinella Staff Management</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-auto min-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 px-6 py-3 bg-white dark:bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined text-3xl font-bold">shield_person</span>
+<h2 class="text-red-600 dark:text-red-500 text-lg font-bold leading-tight tracking-tight">Sentinella </h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'dashboard' %}">Dashboard</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'incidents' %}">Incident Log</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'floor_map' %}">Floor Maps</a>
+<a class="text-primary text-sm font-semibold border-b-2 border-primary py-4" href="#">Staff Portal</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-red-500 dark:hover:text-red-500 transition-colors" href="{% url 'settings' %}">Settings</a> 
+<!-- <a class="text-primary text-sm font-semibold leading-normal" href="#">Directory</a> -->
+<!-- <a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-primary transition-colors" href="#">Shifts</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-primary transition-colors" href="#">Alerts</a>
+<a class="text-slate-600 dark:text-slate-400 text-sm font-medium hover:text-primary transition-colors" href="#">Zones</a> -->
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<label class="hidden sm:flex items-center min-w-40 h-10 max-w-64 relative">
+<span class="material-symbols-outlined absolute left-3 text-slate-400">search</span>
+<input class="form-input w-full rounded-lg border-none bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-500 pl-10 text-sm focus:ring-2 focus:ring-primary" placeholder="Search staff..."/>
+</label>
+<div class="flex items-center gap-3 border-l border-slate-700 pl-4">
+<a href="{% url 'notification' %}" class="flex items-center">
+  <span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-white">notifications</span>
+</a>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-9 border-2 border-primary/20" data-alt="User profile avatar of admin" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBeet3lsKQfjivEWdWqnKrwpQEwSsJjA6Y0l2gpvuEvmOfJMX650d5DIlijHy5IU87CcMJjIbl0sRxXpC9aQLRJXz02oLA9oLa3pkztuJvScMfRhdoBxkkktAYAp6AUtHUbOIJMgB1Zk1wZdNt6Eo7WIrMsF5yIvYf2NbPVpaz89_BKGAHZC7X_5AgKB0QOjx03Fw7UWZPC4GvRIVky8vVWI90S_7jxfnyKtVKbCIwuQsxed2yLIXlPD51KOysRNSwe7svF5LfwHcqb");'></div>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col md:flex-row max-w-7xl mx-auto w-full">
+<!-- Sidebar Menu -->
+<aside class="w-full md:w-64 border-r border-slate-200 dark:border-slate-800 p-4 shrink-0">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">group</span>
+<p class="text-sm font-semibold">Staff Directory</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">schedule</span>
+<p class="text-sm font-medium">Duty Roster</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">map</span>
+<p class="text-sm font-medium">Zone Allocation</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined">assessment</span>
+<p class="text-sm font-medium">Performance</p>
+</div>
+</div>
+</aside>
+<!-- Content Area -->
+<div class="flex-1 p-6 overflow-y-auto">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+<div>
+<h1 class="text-emerald-600 dark:text-emerald-400 text-3xl font-extrabold tracking-tight">Staff Management</h1>
+<p class="text-emerald-600/80 dark:text-emerald-400/80 text-sm mt-1">Manage security officers and cashiers across all zones</p>
+</div>
+<button class="flex items-center gap-2 rounded-lg h-11 px-6 bg-[rgb(188,110,230)] text-white text-sm font-bold shadow-lg hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-xl">person_add</span>
+<span>Add Employee</span>
+</button>
+</div>
+<!-- Filters -->
+<div class="flex border-b border-slate-200 dark:border-slate-800 mb-6 overflow-x-auto whitespace-nowrap">
+<a class="flex items-center gap-2 border-b-2 border-primary text-primary px-6 pb-3 text-sm font-bold" href="#">
+                            All Staff <span class="bg-primary/10 px-2 py-0.5 rounded text-[10px]">24</span>
+</a>
+<a class="flex items-center gap-2 border-b-2 border-transparent text-slate-500 dark:text-slate-400 px-6 pb-3 text-sm font-medium hover:text-slate-700 dark:hover:text-slate-200" href="#">
+                            Security Officers <span class="bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-[10px]">16</span>
+</a>
+<a class="flex items-center gap-2 border-b-2 border-transparent text-slate-500 dark:text-slate-400 px-6 pb-3 text-sm font-medium hover:text-slate-700 dark:hover:text-slate-200" href="#">
+                            Cashiers <span class="bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-[10px]">8</span>
+</a>
+</div>
+<!-- Staff Grid -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+<!-- Profile Card 1 -->
+<div class="flex flex-col @md:flex-row bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden hover:border-primary/50 transition-colors group">
+<div class="w-full @md:w-48 h-48 @md:h-auto bg-center bg-cover shrink-0" data-alt="Portrait of Marcus Thorne security officer" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBLJs6ob7JVTOjXUpIKEQbctS22JtJZE5L_UHo_zFM0f1UeUNtbsI1k12pF7ZoIHOyELmj2VoWvTI8EOMn6pTvD6Xd9FjaHrd41A_IzW2GHkb5Kb3EG9GwJJKcTjEvYWQPojIVZZMiJ-xQyYA7XwN9FSGavXCjErL7PBI6-CSjB1Nc4CNnyRTKMhEpNaCciu8WzF5lWrceb1f9ynTrg6sEe-BdLfSscFyZ7QS-7UWjzsS7-s-w8NMyRh3jMZ3lBgOWQdvMHBDAjrcGZ");'>
+</div>
+<div class="flex-1 p-5 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="size-2 rounded-full bg-emerald-500"></span>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Active - Shift A</p>
+</div>
+<h3 class="text-slate-900 dark:text-white text-xl font-bold">Marcus Thorne</h3>
+<p class="text-primary text-sm font-medium">Senior Security Officer</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-primary transition-colors">more_vert</span>
+</div>
+<div class="mt-4 grid grid-cols-2 gap-4">
+<div class="flex flex-col">
+<span class="text-slate-400 text-[10px] uppercase font-bold tracking-widest">Assigned Zone</span>
+<span class="text-slate-700 dark:text-slate-200 text-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-base text-primary">location_on</span> Zone A-4
+                                            </span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400 text-[10px] uppercase font-bold tracking-widest">Response Time</span>
+<span class="text-emerald-500 text-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-base">bolt</span> 1m 20s
+                                            </span>
+</div>
+</div>
+<div class="mt-3 bg-slate-50 dark:bg-slate-800/50 p-2 rounded-lg border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<span class="text-slate-500 dark:text-slate-400 text-xs">Total Shift History</span>
+<span class="text-slate-900 dark:text-white text-xs font-bold">142 Shifts</span>
+</div>
+</div>
+<div class="mt-4 flex gap-2">
+<button class="flex-1 rounded-lg h-9 px-4 bg-[rgb(188,110,230)] text-white text-sm font-semibold hover:opacity-90 transition-colors">Profile</button>
+<button class="flex-1 rounded-lg h-9 px-4 bg-[rgb(188,110,230)] text-white text-sm font-semibold hover:opacity-90 transition-colors">Schedule</button>
+</div>
+</div>
+</div>
+<!-- Profile Card 2 -->
+<div class="flex flex-col @md:flex-row bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden hover:border-primary/50 transition-colors group">
+<div class="w-full @md:w-48 h-48 @md:h-auto bg-center bg-cover shrink-0" data-alt="Portrait of Sarah Jenkins head cashier" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAxnL3i4LToEOf8XZYln7hkLV0UtTA74NazIFQ9F9HTfTOgL-6YCrXbTHt0PGPbANE04MOaHU91hJDbwA15jlUC_JWZy0LtYsieIb2zijHHnxPukVqBnz2p3bh_SCBTiSRynTRX52mDp3WLVM7rc9AnVIdic7ftNND3MLVt8DtwME7TnHxg6z0eNg5fNVIZt0kvcZFuelhlHM6QF9VTBft8Szfn0hN_y_K1a8yVE7sqTANSx3CAvEIZYtHgtOCzWAUySs2ZUX0LVszy");'>
+</div>
+<div class="flex-1 p-5 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="size-2 rounded-full bg-slate-400"></span>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">Off Duty</p>
+</div>
+<h3 class="text-slate-900 dark:text-white text-xl font-bold">Sarah Jenkins</h3>
+<p class="text-primary text-sm font-medium">Head Cashier</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-primary transition-colors">more_vert</span>
+</div>
+<div class="mt-4 grid grid-cols-2 gap-4">
+<div class="flex flex-col">
+<span class="text-slate-400 text-[10px] uppercase font-bold tracking-widest">Assigned Zone</span>
+<span class="text-slate-700 dark:text-slate-200 text-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-base text-primary">storefront</span> Main Lobby
+                                            </span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400 text-[10px] uppercase font-bold tracking-widest">Efficiency</span>
+<span class="text-amber-500 text-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-base">speed</span> 98.4%
+                                            </span>
+</div>
+</div>
+<div class="mt-3 bg-slate-50 dark:bg-slate-800/50 p-2 rounded-lg border border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<span class="text-slate-500 dark:text-slate-400 text-xs">Total Shift History</span>
+<span class="text-slate-900 dark:text-white text-xs font-bold">205 Shifts</span>
+</div>
+</div>
+<div class="mt-4 flex gap-2">
+<button class="flex-1 rounded-lg h-9 px-4 bg-[rgb(188,110,230)] text-white text-sm font-semibold hover:opacity-90 transition-colors">Profile</button>
+<button class="flex-1 rounded-lg h-9 px-4 bg-[rgb(188,110,230)] text-white text-sm font-semibold hover:opacity-90 transition-colors">Schedule</button>
+</div>
+</div>
+</div>
+</div>
+<!-- New Employee Form Card -->
+<div class="mt-10 bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 max-w-2xl mx-auto shadow-2xl shadow-slate-900/10">
+<div class="flex items-center gap-4 mb-8">
+<div class="size-12 rounded-xl bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-2xl">person_add_alt</span>
+</div>
+<div>
+<h2 class="text-slate-900 dark:text-white text-xl font-bold">Register New Employee</h2>
+<p class="text-slate-500 dark:text-slate-400 text-sm">Fill in the credentials to onboard a new staff member</p>
+</div>
+</div>
+<form class="space-y-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-sm font-bold text-slate-700 dark:text-slate-300">Full Name</label>
+<input class="w-full rounded-lg bg-slate-100 dark:bg-slate-800 border-none text-slate-900 dark:text-white px-4 py-3 focus:ring-2 focus:ring-primary" placeholder="e.g. John Doe" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-bold text-slate-700 dark:text-slate-300">Employee ID</label>
+<input class="w-full rounded-lg bg-slate-100 dark:bg-slate-800 border-none text-slate-900 dark:text-white px-4 py-3 focus:ring-2 focus:ring-primary" placeholder="SENT-2024-XXXX" type="text"/>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-sm font-bold text-slate-700 dark:text-slate-300">Assigned Role</label>
+<select class="w-full rounded-lg bg-slate-100 dark:bg-slate-800 border-none text-slate-900 dark:text-white px-4 py-3 focus:ring-2 focus:ring-primary appearance-none">
+<option>Security Officer</option>
+<option>Cashier</option>
+<option>Janitorial</option>
+<option>Admin</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-bold text-slate-700 dark:text-slate-300">Deployment Zone</label>
+<select class="w-full rounded-lg bg-slate-100 dark:bg-slate-800 border-none text-slate-900 dark:text-white px-4 py-3 focus:ring-2 focus:ring-primary appearance-none">
+<option>Zone A (Retail)</option>
+<option>Zone B (Warehouse)</option>
+<option>Zone C (Parking)</option>
+<option>Zone D (HQ)</option>
+</select>
+</div>
+</div>
+<div class="space-y-2">
+<label class="text-sm font-bold text-slate-700 dark:text-slate-300">Contact Email</label>
+<input class="w-full rounded-lg bg-slate-100 dark:bg-slate-800 border-none text-slate-900 dark:text-white px-4 py-3 focus:ring-2 focus:ring-primary" placeholder="staff@sentinella.com" type="email"/>
+</div>
+<div class="pt-4 flex gap-4">
+<button class="flex-1 rounded-lg h-12 bg-[rgb(188,110,230)] text-white font-bold text-sm shadow-lg hover:brightness-110 transition-all" type="submit">Onboard Employee</button>
+<button class="px-6 rounded-lg h-12 bg-[rgb(188,110,230)] text-white font-bold text-sm hover:opacity-90 transition-colors" type="reset">Cancel</button>
+</div>
+</form>
+</div>
+</div>
+</main>
+<!-- Bottom Stats Bar (Optional UI touch) -->
+<footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 px-6 py-4">
+<div class="max-w-7xl mx-auto flex flex-wrap justify-center gap-10 md:justify-start items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">timer</span>
+<p class="text-xs text-slate-500 dark:text-slate-400">Avg Response Time: <span class="font-bold text-slate-900 dark:text-white">1m 45s</span></p>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-emerald-500 text-xl">check_circle</span>
+<p class="text-xs text-slate-500 dark:text-slate-400">Staff Active: <span class="font-bold text-slate-900 dark:text-white">18/24</span></p>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-500 text-xl">warning</span>
+<p class="text-xs text-slate-500 dark:text-slate-400">Pending Alerts: <span class="font-bold text-slate-900 dark:text-white">2</span></p>
+</div>
+</div>
+</footer>
+</div>
+</div>
+</body></html>

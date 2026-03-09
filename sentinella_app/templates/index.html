@@ -1,0 +1,535 @@
+<!doctype html>
+
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Sentinella Landing Page</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#8b5cf6",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+              "surface-dark": "#16222e",
+              "border-dark": "#233648",
+            },
+            fontFamily: {
+              display: ["Space Grotesk", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased"
+  >
+    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+      <!-- Navigation -->
+      <header
+        class="flex items-center justify-between whitespace-nowrap border-b border-solid border-border-dark px-6 md:px-10 py-4 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50"
+      >
+        <div class="flex items-center gap-3">
+          <div class="text-primary flex items-center justify-center">
+            <span class="material-symbols-outlined text-3xl">visibility</span>
+          </div>
+          <h2
+            class="text-red-500 text-xl font-bold leading-tight tracking-tight"
+          >
+            Sentinella
+          </h2>
+        </div>
+        <div class="hidden md:flex flex-1 justify-end gap-10">
+          <nav class="flex items-center gap-8">
+            <a
+              class="text-slate-300 hover:text-red-500 text-sm font-medium transition-colors"
+              href="{% url 'dashboard' %}"
+              >Home</a
+            >
+            <a
+              class="text-slate-300 hover:text-red-500 text-sm font-medium transition-colors"
+              href="{% url 'history' %}"
+              >History</a
+            >
+            <a
+              class="text-slate-300 hover:text-red-500 text-sm font-medium transition-colors"
+              href="#"
+              >Product</a
+            >
+            <a
+              class="text-slate-300 hover:text-red-500 text-sm font-medium transition-colors"
+              href="#"
+              >Solutions</a
+            >
+            <a
+              class="text-slate-300 hover:text-red-500 text-sm font-medium transition-colors"
+              href="#"
+              >Case Studies</a
+            >
+            <a
+              class="text-slate-300 hover:text-red-500 text-sm font-medium transition-colors"
+              href="#"
+              >Pricing</a
+            >
+          </nav>
+          <div class="flex gap-3">
+            <a href="{% url 'register' %}"
+              class="flex items-center justify-center rounded-lg h-10 px-5 bg-primary text-white text-sm font-bold transition-all hover:brightness-110"
+            >
+              Book a Demo
+            </a>
+            <a href="{% url 'login' %}"
+              class="flex items-center justify-center rounded-lg h-10 px-5 bg-primary text-white text-sm font-bold transition-all hover:brightness-110"
+            >
+              Login
+            </a>
+          </div>
+        </div>
+        <!-- Mobile Menu Icon (Visual Only) -->
+        <button class="md:hidden text-slate-100">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </header>
+      <main class="flex-1">
+        <!-- Hero Section -->
+        <div class="max-w-7xl mx-auto px-6 py-12 md:py-20 lg:px-10">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="flex flex-col gap-8">
+              <div
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider w-fit"
+              >
+                <span class="material-symbols-outlined text-sm">bolt</span>
+                Real-Time Theft Detection
+              </div>
+              <h1
+                class="text-slate-100 text-4xl md:text-6xl font-bold leading-[1.1] tracking-tight"
+              >
+                Secure Your Supermarket with
+                <span class="text-primary">AI-Powered</span> Vigilance
+              </h1>
+              <p
+                class="text-slate-400 text-lg md:text-xl max-w-xl leading-relaxed"
+              >
+                Sentinella uses advanced computer vision to identify suspicious
+                behavior instantly, reducing shrinkage and boosting your ROI
+                from day one.
+              </p>
+              <div class="flex flex-wrap gap-4">
+                <button
+                  class="flex items-center justify-center rounded-lg h-14 px-8 bg-primary text-white text-lg font-bold transition-all hover:scale-[1.02]"
+                >
+                 <a href="{% url 'register' %}" >Book a Demo</a>
+                </button>
+                <button
+                  class="flex items-center justify-center gap-2 rounded-lg h-14 px-8 bg-surface-dark border border-border-dark text-slate-100 text-lg font-bold hover:bg-border-dark transition-all"
+                >
+                  <span class="material-symbols-outlined">play_circle</span>
+                  Watch Video
+                </button>
+              </div>
+              <div class="flex items-center gap-4 text-slate-500 text-sm">
+                <div class="flex -space-x-2">
+                  <div
+                    class="w-8 h-8 rounded-full border-2 border-background-dark bg-slate-700"
+                  ></div>
+                  <div
+                    class="w-8 h-8 rounded-full border-2 border-background-dark bg-slate-600"
+                  ></div>
+                  <div
+                    class="w-8 h-8 rounded-full border-2 border-background-dark bg-slate-500"
+                  ></div>
+                </div>
+                <span>Joined by 500+ global retail partners</span>
+              </div>
+            </div>
+            <div class="relative group">
+              <div
+                class="absolute -inset-1 bg-gradient-to-r from-primary to-purple-600 rounded-xl blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"
+              ></div>
+              <div
+                class="relative w-full aspect-video md:aspect-square lg:aspect-[4/3] bg-surface-dark border border-border-dark rounded-xl overflow-hidden shadow-2xl"
+              >
+                <img
+                  class="w-full h-full object-cover opacity-80"
+                  data-alt="3D visualization of supermarket AI security scan"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCg-Kz1WO0eL_UnYSinuJFTlvltIunSQMsJWIMHY_lbYAEHWu0e6i0aRzPJk3op5IrjlOskrPJxzSMZmgLvgiHLksTLFdzW5KtqC5aEvbK-VGD-vLgJyh6WyrkeR4hAHT2y5wpq2aO-clc0Yv8nU2z_CKcM0x7M7Up6w9d3crOn6NIBrQ3f45zPvM-h9In7PdOJm6KxS6iE4NFdwR5EOA1CRjuK_RCyZ6Fvq76X1D8GwSFfYMvzftAgGztu9MvYUdZht_1VJ6nFGOCu"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent"
+                ></div>
+                <!-- AI Overlay Elements -->
+                <div
+                  class="absolute top-4 left-4 p-3 bg-red-500/20 border border-red-500/50 rounded backdrop-blur-sm"
+                >
+                  <div
+                    class="flex items-center gap-2 text-red-500 text-xs font-bold"
+                  >
+                    <span
+                      class="material-symbols-outlined text-sm animate-pulse"
+                      >warning</span
+                    >
+                    SUSPICIOUS ACTIVITY DETECTED
+                  </div>
+                </div>
+                <div
+                  class="absolute bottom-4 right-4 p-4 bg-background-dark/80 border border-border-dark rounded-lg backdrop-blur-sm"
+                >
+                  <div class="flex items-center gap-4">
+                    <div
+                      class="size-10 rounded bg-primary/20 flex items-center justify-center text-primary"
+                    >
+                      <span class="material-symbols-outlined">analytics</span>
+                    </div>
+                    <div>
+                      <p class="text-xs text-slate-400">Detection Confidence</p>
+                      <p class="text-lg font-bold text-white">99.8%</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Stats Grid -->
+        <div class="max-w-7xl mx-auto px-6 py-12 lg:px-10">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div
+              class="flex flex-col gap-3 rounded-xl p-8 bg-surface-dark border border-border-dark group hover:border-primary/50 transition-all"
+            >
+              <p class="text-slate-400 text-base font-medium">Average ROI</p>
+              <p class="text-white text-4xl font-bold tracking-tight">150%</p>
+              <div
+                class="flex items-center gap-1 text-emerald-500 font-bold text-sm"
+              >
+                <span class="material-symbols-outlined text-sm"
+                  >trending_up</span
+                >
+                +20% this quarter
+              </div>
+            </div>
+            <div
+              class="flex flex-col gap-3 rounded-xl p-8 bg-surface-dark border border-border-dark group hover:border-primary/50 transition-all"
+            >
+              <p class="text-slate-400 text-base font-medium">
+                Shrinkage Reduction
+              </p>
+              <p class="text-white text-4xl font-bold tracking-tight">45%</p>
+              <div
+                class="flex items-center gap-1 text-emerald-500 font-bold text-sm"
+              >
+                <span class="material-symbols-outlined text-sm"
+                  >arrow_downward</span
+                >
+                -15% avg. loss
+              </div>
+            </div>
+            <div
+              class="flex flex-col gap-3 rounded-xl p-8 bg-surface-dark border border-border-dark group hover:border-primary/50 transition-all"
+            >
+              <p class="text-slate-400 text-base font-medium">
+                Detection Accuracy
+              </p>
+              <p class="text-white text-4xl font-bold tracking-tight">99.8%</p>
+              <div
+                class="flex items-center gap-1 text-emerald-500 font-bold text-sm"
+              >
+                <span class="material-symbols-outlined text-sm">verified</span>
+                Top-tier industry standard
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Features -->
+        <div class="max-w-7xl mx-auto px-6 py-20 lg:px-10">
+          <div
+            class="flex flex-col md:flex-row justify-between items-end gap-6 mb-16"
+          >
+            <div class="max-w-2xl">
+              <h2
+                class="text-slate-100 text-3xl md:text-4xl font-bold leading-tight mb-4"
+              >
+                Advanced Loss Prevention Suite
+              </h2>
+              <p class="text-slate-400 text-lg">
+                Our suite of AI tools integrates seamlessly with your existing
+                camera infrastructure, providing a layer of intelligence that
+                human eyes can't match.
+              </p>
+            </div>
+            <button
+              class="text-primary font-bold hover:underline flex items-center gap-2"
+            >
+              View all features
+              <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div
+              class="flex flex-col gap-6 p-8 rounded-2xl bg-surface-dark border border-border-dark hover:bg-surface-dark/50 transition-all"
+            >
+              <div
+                class="size-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary"
+              >
+                <span class="material-symbols-outlined text-3xl"
+                  >shield_locked</span
+                >
+              </div>
+              <div>
+                <h3 class="text-slate-100 text-xl font-bold mb-3">
+                  Real-time Detection
+                </h3>
+                <p class="text-slate-400 leading-relaxed">
+                  Instant alerts sent to floor staff the moment suspicious
+                  behavior or unconventional checkout patterns are identified.
+                </p>
+              </div>
+            </div>
+            <!-- Feature 2 -->
+            <div
+              class="flex flex-col gap-6 p-8 rounded-2xl bg-surface-dark border border-border-dark hover:bg-surface-dark/50 transition-all"
+            >
+              <div
+                class="size-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary"
+              >
+                <span class="material-symbols-outlined text-3xl"
+                  >query_stats</span
+                >
+              </div>
+              <div>
+                <h3 class="text-slate-100 text-xl font-bold mb-3">
+                  Loss Prevention ROI
+                </h3>
+                <p class="text-slate-400 leading-relaxed">
+                  Track recovered revenue and system performance through a
+                  comprehensive dashboard that quantifies every saved dollar.
+                </p>
+              </div>
+            </div>
+            <!-- Feature 3 -->
+            <div
+              class="flex flex-col gap-6 p-8 rounded-2xl bg-surface-dark border border-border-dark hover:bg-surface-dark/50 transition-all"
+            >
+              <div
+                class="size-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary"
+              >
+                <span class="material-symbols-outlined text-3xl"
+                  >settings_input_component</span
+                >
+              </div>
+              <div>
+                <h3 class="text-slate-100 text-xl font-bold mb-3">
+                  Smart Integration
+                </h3>
+                <p class="text-slate-400 leading-relaxed">
+                  Compatible with all major NVR/VMS systems with a
+                  zero-disruption, plug-and-play setup that scales with your
+                  business.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Trust Badges -->
+        <div class="border-y border-border-dark bg-surface-dark/30 py-16">
+          <div class="max-w-7xl mx-auto px-6 lg:px-10">
+            <p
+              class="text-center text-slate-500 font-bold uppercase tracking-widest text-sm mb-12"
+            >
+              Trusted by Global Retailers
+            </p>
+            <div
+              class="flex flex-wrap justify-center items-center gap-12 md:gap-20 opacity-40 grayscale contrast-125"
+            >
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-3xl"
+                  >shopping_cart</span
+                >
+                <span class="text-xl font-bold">METRO</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-3xl"
+                  >storefront</span
+                >
+                <span class="text-xl font-bold">SAVEMORE</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-3xl"
+                  >local_mall</span
+                >
+                <span class="text-xl font-bold">URBANFOOD</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-3xl"
+                  >add_business</span
+                >
+                <span class="text-xl font-bold">RETAILX</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- CTA Section -->
+        <div class="max-w-5xl mx-auto px-6 py-24 text-center">
+          <div
+            class="bg-gradient-to-br from-primary to-purple-700 rounded-3xl p-12 md:p-20 shadow-2xl relative overflow-hidden"
+          >
+            <div
+              class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 size-96 bg-white/10 rounded-full blur-3xl"
+            ></div>
+            <div class="relative z-10">
+              <h2 class="text-white text-4xl md:text-5xl font-bold mb-6">
+                Ready to eliminate checkout theft?
+              </h2>
+              <p
+                class="text-white/80 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
+              >
+                Join the hundreds of supermarkets using Sentinella to protect
+                their margins and create a safer shopping environment.
+              </p>
+              <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="{% url 'register' %}"
+                  class="bg-white text-primary px-10 py-4 rounded-xl font-bold text-lg hover:bg-slate-100 transition-all shadow-lg flex items-center justify-center"
+                >
+                  Get Started Today
+                </a>
+                <button
+                  class="bg-primary-dark/20 border border-white/30 text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition-all backdrop-blur-sm"
+                >
+                  Contact Sales
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <!-- Footer -->
+      <footer
+        class="bg-background-dark border-t border-border-dark py-12 px-6 md:px-10"
+      >
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+          <div class="col-span-1 md:col-span-1">
+            <div class="flex items-center gap-2 mb-6">
+              <span class="material-symbols-outlined text-primary text-2xl"
+                >visibility</span
+              >
+              <h3 class="text-red-500 text-lg font-bold">Sentinella</h3>
+            </div>
+            <p class="text-slate-500 text-sm leading-relaxed">
+              The world's leading AI-powered theft detection system for modern
+              retail environments.
+            </p>
+          </div>
+          <div>
+            <h4 class="text-white font-bold mb-6">Platform</h4>
+            <ul class="space-y-4 text-slate-400 text-sm">
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >How it Works</a
+                >
+              </li>
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >Integration</a
+                >
+              </li>
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >Case Studies</a
+                >
+              </li>
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >Dashboard</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-white font-bold mb-6">Company</h4>
+            <ul class="space-y-4 text-slate-400 text-sm">
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >Careers</a
+                >
+              </li>
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li>
+                <a class="hover:text-primary transition-colors" href="#"
+                  >Terms of Service</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-white font-bold mb-6">Newsletter</h4>
+            <p class="text-slate-400 text-sm mb-4">
+              Get the latest insights on retail security.
+            </p>
+            <div class="flex gap-2">
+              <input
+                class="bg-surface-dark border border-border-dark rounded-lg px-4 py-2 text-sm w-full focus:ring-1 focus:ring-primary focus:border-primary outline-none text-slate-100"
+                placeholder="Email"
+                type="email"
+              />
+              <button class="bg-primary text-white p-2 rounded-lg">
+                <span class="material-symbols-outlined">send</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="max-w-7xl mx-auto mt-12 pt-8 border-t border-border-dark flex flex-col md:flex-row justify-between items-center gap-4"
+        >
+          <p class="text-slate-500 text-xs">
+            © 2024 Sentinella. All rights reserved.
+          </p>
+          <div class="flex gap-6 text-slate-500">
+            <a class="hover:text-slate-300 transition-colors" href="#"
+              ><span class="material-symbols-outlined text-xl">share</span></a
+            >
+            <a class="hover:text-slate-300 transition-colors" href="#"
+              ><span class="material-symbols-outlined text-xl">public</span></a
+            >
+            <a class="hover:text-slate-300 transition-colors" href="#"
+              ><span class="material-symbols-outlined text-xl"
+                >contact_support</span
+              ></a
+            >
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
